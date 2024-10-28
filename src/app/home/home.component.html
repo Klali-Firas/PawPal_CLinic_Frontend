@@ -1,0 +1,10 @@
+<h2>Welcome to Home Page</h2>
+<div *ngIf="user">
+    <p>Name: {{ user.name }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p><img [src]="user.picture" alt="Profile Picture" referrerPolicy="no-referrer"></p>
+    <button (click)="logout()">Logout</button>
+</div>
+<div *ngIf="!user">
+    <p>Loading user information...</p>
+</div>
