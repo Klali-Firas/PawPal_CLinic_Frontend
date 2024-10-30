@@ -51,7 +51,7 @@ export interface Services {
 }
 
 export interface Utilisateurs {
-  utilisateurId: number
+  id: number
   email: string
   role: string
   prenom?: string | null
@@ -69,9 +69,9 @@ export interface CommandeProduits {
 }
 
 export interface RendezVous {
-  rendezVousId: number
+  id: number
   animalId: number
-  veterinaireId: number
+  veterinaireId: number | null
   dateRendezVous: Date
   statut: string
   motif?: string | null

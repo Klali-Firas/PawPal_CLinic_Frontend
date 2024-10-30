@@ -5,7 +5,9 @@ import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },  // Default login page
-  { path: 'home', component: HomeComponent }  // Home page after login
+  { path: 'home', component: HomeComponent },
+  { path: "manager", loadChildren: () => import('./manager/manager.module').then(m => m.ManagerModule) },
+  // Home page after login
 ];
 
 @NgModule({
