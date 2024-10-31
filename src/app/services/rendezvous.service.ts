@@ -20,4 +20,9 @@ export class RendezvousService {
     const url = `${this.apiUrl}/${rendezVousId}/assign-veterinaire/${veterinaireId}`;
     return this.http.put<RendezVous>(url, {});
   }
+
+  createRendezVous(rendezVous: RendezVous): Observable<RendezVous> {
+    return this.http.post<RendezVous>(this.apiUrl, rendezVous);
+  }
+  
 }
