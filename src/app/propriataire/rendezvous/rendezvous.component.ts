@@ -11,7 +11,7 @@ import { RendezvousService } from 'src/app/services/rendezvous.service';
 export class RendezvousComponent implements OnInit {
   rendezvousForm: FormGroup;
 
-  constructor(private fb: FormBuilder,private rendevousservice: RendezvousService) {
+  constructor(private fb: FormBuilder, private rendevousservice: RendezvousService) {
     this.rendezvousForm = this.fb.group({
       id: [null, Validators.required],
       animalId: [null, Validators.required],
@@ -27,14 +27,20 @@ export class RendezvousComponent implements OnInit {
   onSubmit(): void {
     if (this.rendezvousForm.valid) {
       const rendezvous: RendezVous = this.rendezvousForm.value;
+      const formValue = this.rendezvousForm.value;
+      rendezvous.dateRendezVous = new Date(formValue.dateRendezVous);
+      rendezvous.creeLe = new Date();
+      rendezvous.statut = "en_attente";
+      rendezvous.veterinaireId = null;
       console.log('Form Submitted', rendezvous);
       // Handle form submission, e.g., send it to a service
       this.rendevousservice.createRendezVous(rendezvous).subscribe({
         next: (response: any) => {
           console.log('Rendezvous added', response);
-          
-        },error: (error: any) => {
-          console.error('Error adding rendezvous', error);}
+
+        }, error: (error: any) => {
+          console.error('Error adding rendezvous', error);
+        }
       });
 
     }
