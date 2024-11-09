@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RendezVous } from 'src/app/interfaces/interfaces';
+import { ToastrService } from 'ngx-toastr';
+import { Animaux, RendezVous, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { AnimauxService } from 'src/app/services/animaux.service';
 import { RendezvousService } from 'src/app/services/rendezvous.service';
 
 @Component({
@@ -10,18 +12,20 @@ import { RendezvousService } from 'src/app/services/rendezvous.service';
 })
 export class RendezvousComponent implements OnInit {
   rendezvousForm: FormGroup;
+  user: Utilisateurs = JSON.parse(localStorage.getItem('user') || '{}');
+  animaux: Animaux[] = [];
 
-  constructor(private fb: FormBuilder, private rendevousservice: RendezvousService) {
+  constructor(private fb: FormBuilder, private rendevousservice: RendezvousService, private animauxService: AnimauxService, private toaster: ToastrService) {
     this.rendezvousForm = this.fb.group({
-      id: [null, Validators.required],
+      proprietaire: [{ value: this.user.nom + ' ' + this.user.prenom, disabled: true }, Validators.required],
       animalId: [null, Validators.required],
       dateRendezVous: [null, Validators.required],
-      motif: [null],
+      motif: [null, Validators.required],
     });
   }
 
   ngOnInit(): void {
-    // You can initialize the form with default values if needed
+    this.getAnimaux();
   }
 
   onSubmit(): void {
@@ -32,11 +36,12 @@ export class RendezvousComponent implements OnInit {
       rendezvous.creeLe = new Date();
       rendezvous.statut = "en_attente";
       rendezvous.veterinaireId = null;
-      console.log('Form Submitted', rendezvous);
       // Handle form submission, e.g., send it to a service
       this.rendevousservice.createRendezVous(rendezvous).subscribe({
-        next: (response: any) => {
-          console.log('Rendezvous added', response);
+        next: () => {
+          this.toaster.success('Rendez-vous ajouté avec succès');
+          this.rendezvousForm.reset();
+          this.rendezvousForm.patchValue({ proprietaire: this.user.nom + ' ' + this.user.prenom });
 
         }, error: (error: any) => {
           console.error('Error adding rendezvous', error);
@@ -44,5 +49,17 @@ export class RendezvousComponent implements OnInit {
       });
 
     }
+  }
+
+  getAnimaux(): void {
+    this.animauxService.getAnimauxByProprietaireId(this.user.id).subscribe({
+      next: (response: Animaux[]) => {
+
+        this.animaux = response;
+        console.log('Animaux', this.animaux[0].id);
+      }, error: (error: any) => {
+        console.error('Error getting animaux', error);
+      }
+    });
   }
 }

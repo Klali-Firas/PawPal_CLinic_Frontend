@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
 import { RendezVous, Utilisateurs } from 'src/app/interfaces/interfaces';
 import { RendezvousService } from 'src/app/services/rendezvous.service';
@@ -11,7 +13,7 @@ import { UtilisateurService } from 'src/app/services/utilisateur.service';
 })
 export class AppointmentsManagerComponent implements OnInit {
 
-  constructor(private rendezVousService: RendezvousService, private utilisateurService: UtilisateurService) { }
+  constructor(private rendezVousService: RendezvousService, private utilisateurService: UtilisateurService, private ngxSpinner: NgxSpinnerService, private toaster: ToastrService) { }
 
 
   rendezVous?: RendezVous[];
@@ -75,16 +77,23 @@ export class AppointmentsManagerComponent implements OnInit {
 
   assignVeterinaire(rendezVousId: number, veterinaireId: number) {
     if (!veterinaireId) return; // Ensure a vet is selected
-    console.log(veterinaireId);
+    this.ngxSpinner.show();
     this.rendezVousService.assignVeterinaire(rendezVousId, veterinaireId).subscribe({
-      next: (rendezVous) => {
+      next: async (rendezVous) => {
         console.log(rendezVous);
         this.rendezVous?.forEach(rendezVous => {
           if (rendezVous.id === rendezVousId) {
             rendezVous.veterinaireId = veterinaireId;
           }
         });
-        location.reload(); // Refresh page after success
+        await this.getAllRendezVous();
+        this.rendezVous?.forEach(async rendezVous => {
+          await this.getPrioprietaireByAnimalId(rendezVous.animalId);
+          // if (rendezVous.veterinaireId === null) return;
+          // await this.getVeterinaireById(rendezVous.veterinaireId);
+        });
+        this.ngxSpinner.hide();
+        this.toaster.success('Veterinaire assigné avec succès');
       },
       error: (err) => {
         console.error(err);

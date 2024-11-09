@@ -12773,3 +12773,6 @@ textarea.form-control {
     stroke-dashoffset: -136px;
   }
 }
+.nav-item {
+  cursor: pointer;
+}

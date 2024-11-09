@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,32 +11,32 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   user: any;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private ngxSpinner: NgxSpinnerService, private authService: AuthService, private toaster: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
+    this.ngxSpinner.show();  // Show spinner
+
     // Fetch authenticated user's info from backend
-    this.http.get('http://localhost:4332/user', { withCredentials: true }).subscribe(
-      data => {
-        this.user = data;
-        console.log('User data:', this.user);  // Debugging: Log user data to console
-      },
-      error => {
-        console.error('Error fetching user data:', error);  // Debugging: Log any errors
+    this.authService.fetchUser()
+    setTimeout(() => {
+      this.user = JSON.parse(localStorage.getItem('user') || '{}');
+      this.user.photo = localStorage.getItem('photo');
+      this.ngxSpinner.hide();  // Hide spinner
+      if (this.user.role === 'proprietaire') {
+        this.router.navigate(['/proprietaire']);
+      } else if (this.user.role === 'veterinaire') {
+        this.router.navigate(['/veterinaire']);
+      } else {
+        this.router.navigate(['/manager']);
       }
-    );
+
+    }, 300);
+    this.toaster.success('Logged in Successfully', 'Welcome to the home page');
+
   }
 
   logout(): void {
-    this.http.post('http://localhost:4332/logout', {}, { withCredentials: true }).subscribe(
-      () => {
-        this.user = null;
-        // Manually handle the redirect after successful logout
-        window.location.href = 'http://localhost:4200/';
-      },
-      error => {
-        console.error('Error during logout:', error);  // Debugging: Log any errors
-      }
-    );
+    this.authService.logout();
   }
 
 }

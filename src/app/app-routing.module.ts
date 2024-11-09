@@ -5,7 +5,8 @@ import { HomeComponent } from './home/home.component';
 import { PropriataireModule } from './propriataire/propriataire.module';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },  // Default login page
+  { path: '', loadChildren: () => import('./accueil/accueil.module').then(m => m.AccueilModule) }, // Default route
+  { path: 'login', component: LoginComponent },  // Default login page
   { path: 'home', component: HomeComponent },
   { path: "manager", loadChildren: () => import('./manager/manager.module').then(m => m.ManagerModule) },
   { path: "proprietaire", loadChildren: () => import('./propriataire/propriataire.module').then(m => PropriataireModule) },
