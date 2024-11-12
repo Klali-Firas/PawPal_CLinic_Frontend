@@ -14,4 +14,8 @@ export class AnimauxService {
   getAnimauxByProprietaireId(proprietaireId: number): Observable<Animaux[]> {
     return this.http.get<Animaux[]>(`${this.apiUrl}/proprietaire/${proprietaireId}`);
   }
+
+  getAnimauxById(id: number): Observable<Animaux> {
+    return this.http.get<Animaux>(`${this.apiUrl}/${id}`);
+  }
 }

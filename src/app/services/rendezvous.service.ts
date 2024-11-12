@@ -24,5 +24,10 @@ export class RendezvousService {
   createRendezVous(rendezVous: RendezVous): Observable<RendezVous> {
     return this.http.post<RendezVous>(this.apiUrl, rendezVous);
   }
-  
+
+  getRendezVousByVeterinaireId(veterinaireId: number): Observable<RendezVous[]> {
+    const url = `${this.apiUrl}/veterinaire/${veterinaireId}`;
+    return this.http.get<RendezVous[]>(url);
+  }
+
 }
