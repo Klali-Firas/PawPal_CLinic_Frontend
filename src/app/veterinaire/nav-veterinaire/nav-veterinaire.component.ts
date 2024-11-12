@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { OnInit, Renderer2, ElementRef } from '@angular/core';
+
 
 @Component({
   selector: 'app-nav-veterinaire',
@@ -37,3 +39,4 @@ export class NavVeterinaireComponent implements OnInit {
     });
   }
 }
+
