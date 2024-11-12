@@ -2,19 +2,25 @@
   <h2>Rendez-vous Form</h2>
   <form [formGroup]="rendezvousForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="id">ID</label>
-      <input type="number" id="id" formControlName="id" class="form-control" required>
-      <div *ngIf="rendezvousForm.get('id')?.invalid && rendezvousForm.get('id')?.touched" class="text-danger">
-        ID is required.
+      <label for="proprietaire">Proprietaire</label>
+      <input type="text" id="proprietaire" formControlName="proprietaire" class="form-control" required>
+      <div *ngIf="rendezvousForm.get('proprietaire')?.invalid && rendezvousForm.get('proprietaire')?.touched"
+        class="text-danger">
+        Proprietaire is required.
       </div>
     </div>
 
+
     <div class="form-group">
-      <label for="animalId">Animal ID</label>
-      <input type="number" id="animalId" formControlName="animalId" class="form-control" required>
+      <label for="animalId">Animal</label>
+      <select id="animalId" formControlName="animalId" class="form-control" required>
+        <option *ngFor="let animal of animaux" [value]="animal.id">
+          {{ animal.nom }} - {{ animal.race }}
+        </option>
+      </select>
       <div *ngIf="rendezvousForm.get('animalId')?.invalid && rendezvousForm.get('animalId')?.touched"
         class="text-danger">
-        Animal ID is required.
+        Animal is required.
       </div>
     </div>
 

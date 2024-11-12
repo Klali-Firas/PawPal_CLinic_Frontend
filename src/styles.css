@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+@import "ngx-toastr/toastr";
+.loading-text[_ngcontent-ng-c2009170884] {
+  color: white;
+}
+
+a[href="https://primeng.org/lts"]
+{
+  display: none !important;
+}

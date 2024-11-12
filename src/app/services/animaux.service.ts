@@ -8,9 +8,12 @@ import { Observable } from 'rxjs';
 })
 export class AnimauxService {
 
-  private apiUrl = 'http://localhost:4332/api/public/animaux';  // Base URL of the API
-
   constructor(private http: HttpClient) { }
+  apiUrl = 'http://localhost:4332/api/public/animaux';
+
+  getAnimauxByProprietaireId(proprietaireId: number): Observable<Animaux[]> {
+    return this.http.get<Animaux[]>(`${this.apiUrl}/proprietaire/${proprietaireId}`);
+  }
 
   // Get all animals
   getAllAnimaux(): Observable<Animaux[]> {
