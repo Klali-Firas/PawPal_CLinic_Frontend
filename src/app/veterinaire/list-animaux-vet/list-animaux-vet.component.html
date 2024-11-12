@@ -1,0 +1,39 @@
+<app-nav-veterinaire></app-nav-veterinaire>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Liste des Animaux</h2>
+        <a href="/ajoutAnimal" class="btn btn-success">Ajouter un animal</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Race</th>
+                <th scope="col">Age</th>
+                <th scope="col">Historique médical</th>
+                <th scope="col">Propriétaire</th>
+                <th scope="col">Date de création</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let animal of animauxList">
+              <td>{{ animal.nom}}</td>
+              <td>{{ animal.race }}</td>
+              <td>{{ animal.age}}</td>
+              <td>{{ animal.historiqueMedical}}</td>
+              <td>{{ animal.proprietaireId}}</td>
+              <td>{{ animal.creeLe | date}}</td>
+              <!-- Add more fields as needed -->
+              <td>
+                <button class="btn btn-primary btn-sm me-2" >Voir</button>
+                <button class="btn btn-warning btn-sm me-2" >Modifier</button>
+                <button class="btn btn-danger btn-sm">Supprimer</button>
+              </td>
+            </tr>
+          </tbody>
+          
+    </table>
+</div>

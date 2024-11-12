@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
-import {  ReactiveFormsModule } from '@angular/forms';
+import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VeterinaireModule } from './veterinaire/veterinaire.module';
+
+
 
 @NgModule({
   declarations: [
@@ -14,12 +17,15 @@ import {  ReactiveFormsModule } from '@angular/forms';
     LoginComponent,
     HomeComponent,
     
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    VeterinaireModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

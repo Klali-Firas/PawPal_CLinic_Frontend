@@ -27,5 +27,8 @@ export class UtilisateurService {
   getAllVeterinaires(): Observable<Utilisateurs[]> {
     return this.http.get<Utilisateurs[]>(`${this.apiUrl}/veterinaires`);
   }
+  getAllUtilisateurs(): Observable<Utilisateurs[]> {
+    return this.http.get<Utilisateurs[]>(`${this.apiUrl}`);
+  }
 }
 
