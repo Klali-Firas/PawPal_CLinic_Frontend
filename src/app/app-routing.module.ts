@@ -14,9 +14,9 @@ const routes: Routes = [
   { path: "manager", loadChildren: () => import('./manager/manager.module').then(m => m.ManagerModule) },
   { path: "proprietaire", loadChildren: () => import('./propriataire/propriataire.module').then(m => PropriataireModule) },
 
-  { path: 'veterinaire', loadChildren: () => import('./veterinaire/veterinaire.module').then(m => m.VeterinaireModule) }
-  { path: 'ListAnimauxVet', component: ListAnimauxVetComponent},
-  { path: 'ajoutAnimal', component: AjoutAnimalComponent},
+  { path: 'veterinaire', loadChildren: () => import('./veterinaire/veterinaire.module').then(m => m.VeterinaireModule) },
+  // { path: 'ListAnimauxVet', component: ListAnimauxVetComponent},
+  // { path: 'ajoutAnimal', component: AjoutAnimalComponent},
 
   // Home page after login
 ];

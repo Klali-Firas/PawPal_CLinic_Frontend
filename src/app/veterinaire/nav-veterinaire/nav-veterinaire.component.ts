@@ -25,10 +25,17 @@ export class NavVeterinaireComponent implements OnInit {
     });
   }
 
+  onListAnimauxVet() {
+    this.router.navigate(['veterinaire', 'ListAnimauxVet']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
   private updateActiveClass() {
     const currentUrl = this.router.url;
     const activeRoute = currentUrl.split('/').pop();
     const liElements = this.el.nativeElement.querySelectorAll('li');
+    console.log(activeRoute);
 
     liElements.forEach((li: HTMLElement) => {
       if (li.getAttribute('data-route') === activeRoute) {

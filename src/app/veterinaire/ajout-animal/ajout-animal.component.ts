@@ -10,18 +10,18 @@ import { UtilisateurService } from 'src/app/services/utilisateur.service';
   templateUrl: './ajout-animal.component.html',
   styleUrls: ['./ajout-animal.component.css']
 })
-export class AjoutAnimalComponent implements OnInit{
+export class AjoutAnimalComponent implements OnInit {
   utilisateurs: Utilisateurs[] = [];
   selectedOwnerId: number | null = null;  // To bind the selected user
   animalForm: FormGroup;
-  constructor(private utilisateurService: UtilisateurService , private fb: FormBuilder, private animalService:AnimauxService )  {
+  constructor(private utilisateurService: UtilisateurService, private fb: FormBuilder, private animalService: AnimauxService) {
     this.animalForm = this.fb.group({
       nom: [null, Validators.required],
       race: [null],
       age: [null],
       historiqueMedical: [null],
-      proprietaireId: [null, Validators.required], 
-   
+      proprietaireId: [null, Validators.required],
+
     });
   }
 
@@ -43,7 +43,7 @@ export class AjoutAnimalComponent implements OnInit{
       const formValue = this.animalForm.value;
 
       const newAnimal: Animaux = {
-        animalId: formValue.animalId || 0,
+        id: formValue.animalId || 0,
         proprietaireId: formValue.proprietaireId,
         nom: formValue.nom,
         race: formValue.race,
@@ -67,9 +67,9 @@ export class AjoutAnimalComponent implements OnInit{
     }
   }
 
- 
 
 
 
-  
+
+
 }
