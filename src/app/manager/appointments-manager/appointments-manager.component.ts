@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
-import { RendezVous, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { Animaux, RendezVous, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { AnimauxService } from 'src/app/services/animaux.service';
 import { RendezvousService } from 'src/app/services/rendezvous.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
 
@@ -13,12 +14,14 @@ import { UtilisateurService } from 'src/app/services/utilisateur.service';
 })
 export class AppointmentsManagerComponent implements OnInit {
 
-  constructor(private rendezVousService: RendezvousService, private utilisateurService: UtilisateurService, private ngxSpinner: NgxSpinnerService, private toaster: ToastrService) { }
+
+  constructor(private rendezVousService: RendezvousService, private utilisateurService: UtilisateurService, private ngxSpinner: NgxSpinnerService, private toaster: ToastrService, private animauxService: AnimauxService) { }
 
 
   rendezVous?: RendezVous[];
   veterinaires: Map<number, Utilisateurs> = new Map();
   proprietaires: Map<number, Utilisateurs> = new Map();
+  animaux: Map<number, Animaux> = new Map();
   // Component code
   selectedVetIds: { [rendezVousId: number]: number } = {};
 
@@ -27,6 +30,7 @@ export class AppointmentsManagerComponent implements OnInit {
     await this.getAllRendezVous();
     this.rendezVous?.forEach(async rendezVous => {
       await this.getPrioprietaireByAnimalId(rendezVous.animalId);
+      this.getAnimauxById(rendezVous.animalId);
       // if (rendezVous.veterinaireId === null) return;
       // await this.getVeterinaireById(rendezVous.veterinaireId);
     });
@@ -104,6 +108,17 @@ export class AppointmentsManagerComponent implements OnInit {
   onVetChange(event: Event, rendezVousId: number) {
     const selectElement = event.target as HTMLSelectElement; // Type the event target
     this.selectedVetIds[rendezVousId] = +selectElement.value; // Get the value
+  }
+
+  getAnimauxById(id: number) {
+    this.animauxService.getAnimauxById(id).subscribe({
+      next: (animal) => {
+        this.animaux.set(id, animal);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
 }

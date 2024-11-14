@@ -10,7 +10,6 @@
       </div>
     </div>
 
-
     <div class="form-group">
       <label for="animalId">Animal</label>
       <select id="animalId" formControlName="animalId" class="form-control" required>
@@ -24,7 +23,6 @@
       </div>
     </div>
 
-
     <div class="form-group">
       <label for="dateRendezVous">Date of Rendez-vous</label>
       <input type="datetime-local" id="dateRendezVous" formControlName="dateRendezVous" class="form-control" required>
@@ -34,10 +32,16 @@
       </div>
     </div>
 
-
     <div class="form-group">
       <label for="motif">Motif</label>
-      <input type="text" id="motif" formControlName="motif" class="form-control">
+      <select id="motif" formControlName="motif" class="form-control" required>
+        <option *ngFor="let service of services" [value]="service.id">
+          {{ service.nomService }}
+        </option>
+      </select>
+      <div *ngIf="rendezvousForm.get('motif')?.invalid && rendezvousForm.get('motif')?.touched" class="text-danger">
+        Motif is required.
+      </div>
     </div>
 
     <button type="submit" class="btn btn-primary" [disabled]="rendezvousForm.invalid">Submit</button>

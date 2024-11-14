@@ -10662,7 +10662,7 @@ h5,
 }
 @media (max-width: 991.98px) {
   .ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
-    display: block !important;
+    /* display: block !important; */
     background: #fff;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -10696,14 +10696,14 @@ h5,
   -ms-transform: scaleX(1);
   transform: scaleX(1);
 }
-@media (max-width: 991.98px) {
+/* @media (max-width: 991.98px) {
   .ftco-navbar-light .navbar-nav > .nav-item.active > a {
     color: #000000;
   }
   .ftco-navbar-light .navbar-nav > .nav-item.active > a:before {
     display: none;
   }
-}
+} */
 .ftco-navbar-light .navbar-toggler {
   border: none;
   color: rgba(0, 0, 0, 0.5) !important;

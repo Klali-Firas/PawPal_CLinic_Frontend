@@ -37,7 +37,7 @@ export interface Rappels {
 export interface ServicesAnimaux {
   id: number
   animalId: number
-  veterinaireId: number
+  veterinaireId: number | null
   serviceId: number
   dateService: Date
   remarques?: string | null
