@@ -31,7 +31,7 @@
                 </td>
                 <td>{{ rv.dateRendezVous | date:'short' }}</td>
                 <td>{{ rv.statut }}</td>
-                <td>{{ rv.motif }}</td>
+                <td>{{ services.get(rv.motif)?.nomService }}</td>
                 <td>
                     <button class="btn btn-primary" *ngIf="!rv.veterinaireId" [disabled]="!selectedVetIds[rv.id]"
                         (click)="assignVeterinaire(rv.id, selectedVetIds[rv.id])">

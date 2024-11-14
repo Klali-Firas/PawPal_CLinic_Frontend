@@ -23,7 +23,6 @@ export class NavpropriataireComponent implements OnInit {
     // console.log(activeRoute);
 
     liElements.forEach((li: HTMLElement) => {
-      console.log(li.getAttribute('data-route'));
       if (li.getAttribute('data-route') === activeRoute) {
         this.renderer.addClass(li, 'active');
       } else {

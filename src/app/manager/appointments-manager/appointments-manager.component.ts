@@ -2,9 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
-import { Animaux, RendezVous, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { Animaux, RendezVous, Services, Utilisateurs } from 'src/app/interfaces/interfaces';
 import { AnimauxService } from 'src/app/services/animaux.service';
 import { RendezvousService } from 'src/app/services/rendezvous.service';
+import { ServiceService } from 'src/app/services/service.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
 
 @Component({
@@ -15,7 +16,7 @@ import { UtilisateurService } from 'src/app/services/utilisateur.service';
 export class AppointmentsManagerComponent implements OnInit {
 
 
-  constructor(private rendezVousService: RendezvousService, private utilisateurService: UtilisateurService, private ngxSpinner: NgxSpinnerService, private toaster: ToastrService, private animauxService: AnimauxService) { }
+  constructor(private rendezVousService: RendezvousService, private utilisateurService: UtilisateurService, private ngxSpinner: NgxSpinnerService, private toaster: ToastrService, private animauxService: AnimauxService, private serviceService: ServiceService) { }
 
 
   rendezVous?: RendezVous[];
@@ -25,7 +26,10 @@ export class AppointmentsManagerComponent implements OnInit {
   // Component code
   selectedVetIds: { [rendezVousId: number]: number } = {};
 
+  services: Map<number, Services> = new Map();
+
   async ngOnInit(): Promise<void> {
+    this.getAllServices();
     await this.getAllVeterinaires();
     await this.getAllRendezVous();
     this.rendezVous?.forEach(async rendezVous => {
@@ -120,5 +124,19 @@ export class AppointmentsManagerComponent implements OnInit {
       }
     });
   }
+
+  getAllServices() {
+    this.serviceService.getAllServices().subscribe({
+      next: (services) => {
+        services.map(service => {
+          this.services.set(service.id, service);
+        });
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
 
 }

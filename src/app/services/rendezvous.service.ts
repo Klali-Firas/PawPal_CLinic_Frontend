@@ -11,7 +11,6 @@ export class RendezvousService {
   constructor(private http: HttpClient) { }
   apiUrl = 'http://localhost:4332/api/public/rendezvous';
 
-
   getAllRendezVous(): Observable<RendezVous[]> {
     return this.http.get<RendezVous[]>(this.apiUrl);
   }
@@ -30,4 +29,7 @@ export class RendezvousService {
     return this.http.get<RendezVous[]>(url);
   }
 
+  updateRendezVous(id: number, rendezVous: RendezVous): Observable<RendezVous> {
+    return this.http.put<RendezVous>(`${this.apiUrl}/${id}`, rendezVous);
+  }
 }

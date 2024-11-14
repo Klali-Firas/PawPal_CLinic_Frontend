@@ -34,14 +34,7 @@ export interface Rappels {
   creeLe?: Date | null
 }
 
-export interface ServicesAnimaux {
-  id: number
-  animalId: number
-  veterinaireId: number | null
-  serviceId: number
-  dateService: Date
-  remarques?: string | null
-}
+
 
 export interface Services {
   id: number
@@ -74,8 +67,10 @@ export interface RendezVous {
   veterinaireId: number | null
   dateRendezVous: Date
   statut: string
-  motif?: string | null
+  motif: number
   creeLe?: Date | null
+  remarques?: string | null
+
 }
 
 export interface Produits {
@@ -101,7 +96,6 @@ export interface Tables {
   commandes: Commandes,
   avis: Avis,
   rappels: Rappels,
-  services_animaux: ServicesAnimaux,
   services: Services,
   utilisateurs: Utilisateurs,
   commande_produits: CommandeProduits,
