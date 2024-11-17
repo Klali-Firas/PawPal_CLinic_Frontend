@@ -10,11 +10,12 @@
                         <th scope="col">Date</th>
                         <th scope="col">Statut</th>
                         <th scope="col">Motif</th>
+                        <th scope="col">Remarques</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 3, currentPage: page }"
-                        (click)="openModal(rv)">
+                    <tr *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 5, currentPage: page }"
+                        (click)="rv.statut === 'confirme' ?openModal(rv):null">
                         <td>{{ proprietaires.get(rv.animalId)?.nom + " " + proprietaires.get(rv.animalId)?.prenom }}
                         </td>
                         <td>{{ animaux.get(rv.animalId)?.nom }}</td>
@@ -22,6 +23,7 @@
                         <td>{{ rv.dateRendezVous | date }}</td>
                         <td>{{ rv.statut }}</td>
                         <td>{{ services.get(rv.motif)?.nomService }}</td>
+                        <td>{{ rv.remarques }}</td>
                     </tr>
                 </tbody>
             </table>

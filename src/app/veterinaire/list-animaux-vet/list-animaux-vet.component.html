@@ -22,13 +22,12 @@
         <td>{{ animal.race }}</td>
         <td>{{ animal.age}}</td>
         <td>{{ animal.historiqueMedical}}</td>
-        <td>{{ animal.proprietaireId}}</td>
+        <td>{{ proprietaires.get(animal.id)?.nom +' '+proprietaires.get(animal.id)?.prenom }}</td>
         <td>{{ animal.creeLe | date}}</td>
         <!-- Add more fields as needed -->
         <td>
-          <button class="btn btn-primary btn-sm me-2">Voir</button>
-          <button class="btn btn-warning btn-sm me-2">Modifier</button>
-          <button class="btn btn-danger btn-sm">Supprimer</button>
+          <a href="veterinaire/modifierAnimal" class="btn-modifier btn-sm me-2">Modifier</a>
+          <button class="btn-supprimer btn-sm">Archiver </button>
         </td>
       </tr>
     </tbody>

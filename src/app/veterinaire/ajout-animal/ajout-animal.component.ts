@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { race } from 'rxjs';
 import { Animaux, Utilisateurs } from 'src/app/interfaces/interfaces';
 import { AnimauxService } from 'src/app/services/animaux.service';
@@ -14,7 +16,7 @@ export class AjoutAnimalComponent implements OnInit {
   utilisateurs: Utilisateurs[] = [];
   selectedOwnerId: number | null = null;  // To bind the selected user
   animalForm: FormGroup;
-  constructor(private utilisateurService: UtilisateurService, private fb: FormBuilder, private animalService: AnimauxService) {
+  constructor(private utilisateurService: UtilisateurService, private fb: FormBuilder, private animalService: AnimauxService, private toastr: ToastrService, private router: Router) {
     this.animalForm = this.fb.group({
       nom: [null, Validators.required],
       race: [null],
@@ -58,6 +60,8 @@ export class AjoutAnimalComponent implements OnInit {
       this.animalService.createAnimaux(newAnimal).subscribe({
         next: (response: any) => {
           console.log('Animal added', response);
+          this.toastr.success('Animal ajouté avec succès');
+          this.router.navigate(['veterinaire', 'ListAnimauxVet']);
           // Optionally, reset the form or notify the user
         },
         error: (error: any) => {
