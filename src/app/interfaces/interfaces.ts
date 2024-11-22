@@ -10,14 +10,14 @@
 
 
 export interface Commandes {
-  commandeId: number
+  id: number
   proprietaireId: number
   dateCommande?: Date | null
   statut: string
 }
 
 export interface Avis {
-  avisId: number
+  id: number
   rendezVousId: number
   note?: number | null
   commentaire?: string | null
@@ -25,7 +25,7 @@ export interface Avis {
 }
 
 export interface Rappels {
-  rappelId: number
+  id: number
   animalId: number
   veterinaireId: number
   dateRappel: Date
@@ -34,24 +34,17 @@ export interface Rappels {
   creeLe?: Date | null
 }
 
-export interface ServicesAnimaux {
-  serviceAnimalId: number
-  animalId: number
-  veterinaireId: number
-  serviceId: number
-  dateService: Date
-  remarques?: string | null
-}
+
 
 export interface Services {
-  serviceId: number
+  id: number
   nomService: string
   description?: string | null
   prix?: number | null
 }
 
 export interface Utilisateurs {
-  utilisateurId: number
+  id: number
   email: string
   role: string
   prenom?: string | null
@@ -61,7 +54,7 @@ export interface Utilisateurs {
 }
 
 export interface CommandeProduits {
-  commandeProduitId: number
+  id: number
   commandeId: number
   produitId: number
   quantite: number
@@ -69,17 +62,19 @@ export interface CommandeProduits {
 }
 
 export interface RendezVous {
-  rendezVousId: number
+  id: number
   animalId: number
-  veterinaireId: number
+  veterinaireId: number | null
   dateRendezVous: Date
   statut: string
-  motif?: string | null
+  motif: number
   creeLe?: Date | null
+  remarques?: string | null
+
 }
 
 export interface Produits {
-  produitId: number
+  id: number
   nomProduit: string
   description?: string | null
   prix: number
@@ -88,7 +83,7 @@ export interface Produits {
 }
 
 export interface Animaux {
-  animalId: number
+  id: number
   proprietaireId: number
   nom: string
   race?: string | null
@@ -101,7 +96,6 @@ export interface Tables {
   commandes: Commandes,
   avis: Avis,
   rappels: Rappels,
-  services_animaux: ServicesAnimaux,
   services: Services,
   utilisateurs: Utilisateurs,
   commande_produits: CommandeProduits,

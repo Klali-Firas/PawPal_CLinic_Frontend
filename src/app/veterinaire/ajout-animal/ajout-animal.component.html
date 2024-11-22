@@ -1,0 +1,42 @@
+<div class="container mt-4">
+  <h2>Ajouter un Animal</h2>
+  <form [formGroup]="animalForm">
+    <div class="mb-3">
+      <label for="animalName" class="form-label">Nom de l'animal</label>
+      <input type="text" class="form-control" id="animalName" formControlName="nom"
+        placeholder="Entrez le nom de l'animal" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="animalRace" class="form-label">Race</label>
+      <input type="text" class="form-control" id="animalRace" formControlName="race"
+        placeholder="Entrez la race de l'animal">
+    </div>
+
+    <div class="mb-3">
+      <label for="animalAge" class="form-label">Âge</label>
+      <input type="number" class="form-control" id="animalAge" formControlName="age"
+        placeholder="Entrez l'âge de l'animal">
+    </div>
+
+    <div class="mb-3">
+      <label for="medicalHistory" class="form-label">Historique médical</label>
+      <textarea class="form-control" id="medicalHistory" formControlName="historiqueMedical" rows="3"
+        placeholder="Entrez l'historique médical de l'animal"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="ownerName" class="form-label">Nom du propriétaire</label>
+      <select class="form-control" id="ownerName" formControlName="proprietaireId" required>
+        <option value="" disabled selected>Choisissez un propriétaire</option>
+        <option *ngFor="let utilisateur of utilisateurs" [value]="utilisateur.id">
+          {{ utilisateur.nom }} {{ utilisateur.prenom }}
+        </option>
+      </select>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-success" (click)="onSubmit()">Ajouter l'animal</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,45 @@
+<div class="container mt-2">
+    <table class="table table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">Proprietaire</th>
+                <th scope="col">Animal</th>
+                <th scope="col">Veterinaire</th>
+                <th scope="col">Date</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Motif</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let rv of rendezVous">
+                <td>{{ proprietaires.get(rv.animalId)?.nom + " " + proprietaires.get(rv.animalId)?.prenom }}</td>
+                <td>{{ animaux.get(rv.animalId)?.nom +" : "+ animaux.get(rv.animalId)?.race}}</td>
+                <td>
+                    <ng-container *ngIf="rv.veterinaireId; else vetList">
+                        {{ veterinaires.get(rv.veterinaireId!)?.nom + " " + veterinaires.get(rv.veterinaireId!)?.prenom
+                        }}
+                    </ng-container>
+                    <ng-template #vetList>
+                        <select class="custom-select" (change)="onVetChange($event, rv.id)">
+                            <option selected disabled>Choose...</option>
+                            <option *ngFor="let vet of veterinaires.values()" [value]="vet.id">
+                                {{ vet.nom + " " + vet.prenom }}
+                            </option>
+                        </select>
+                    </ng-template>
+                </td>
+                <td>{{ rv.dateRendezVous | date:'short' }}</td>
+                <td>{{ rv.statut }}</td>
+                <td>{{ services.get(rv.motif)?.nomService }}</td>
+                <td>
+                    <button class="btn btn-primary" *ngIf="!rv.veterinaireId" [disabled]="!selectedVetIds[rv.id]"
+                        (click)="assignVeterinaire(rv.id, selectedVetIds[rv.id])">
+                        Assign Vet
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<ngx-spinner template="<img src = 'assets/images/loadingCat.webp'/>">Loading...</ngx-spinner>

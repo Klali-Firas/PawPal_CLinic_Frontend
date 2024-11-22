@@ -34,7 +34,8 @@
               "src/assets/css/jquery.timepicker.css",
               "src/assets/css/flaticon.css",
               "src/assets/css/style.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -50,7 +51,6 @@
               "src/assets/js/owl.carousel.min.js",
               "src/assets/js/jquery.magnific-popup.min.js",
               "src/assets/js/scrollax.min.js",
-              "src/assets/js/google-map.js",
               "src/assets/js/main.js"
             ]
           },
@@ -59,8 +59,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "1.1mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -119,5 +119,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
