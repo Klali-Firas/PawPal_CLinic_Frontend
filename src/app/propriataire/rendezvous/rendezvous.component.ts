@@ -37,7 +37,7 @@ export class RendezvousComponent implements OnInit {
       rendezvous.statut = "en_attente";
       rendezvous.veterinaireId = null;
       // Handle form submission, e.g., send it to a service
-      this.rendevousservice.createRendezVous(rendezvous).subscribe({
+      this.rendevousservice.createRendezVous(rendezvous,this.getUserEmail()).subscribe({
         next: () => {
           this.toaster.success('Rendez-vous ajouté avec succès');
           this.rendezvousForm.reset();
@@ -61,5 +61,20 @@ export class RendezvousComponent implements OnInit {
         console.error('Error getting animaux', error);
       }
     });
+  }
+   getUserEmail(): string  {
+    
+    const user = localStorage.getItem('user');
+  
+   
+    if (user) {
+      
+      const parsedUser = JSON.parse(user);
+  
+      return parsedUser.email;
+    } else {
+      console.log('User not found in localStorage');
+      return ""
+    }
   }
 }

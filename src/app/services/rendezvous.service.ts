@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RendezVous } from '../interfaces/interfaces';
@@ -21,8 +21,13 @@ export class RendezvousService {
     return this.http.put<RendezVous>(url, {});
   }
 
-  createRendezVous(rendezVous: RendezVous): Observable<RendezVous> {
-    return this.http.post<RendezVous>(this.apiUrl, rendezVous);
+  createRendezVous(rendezVous: RendezVous, email: string): Observable<RendezVous> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'  // Set the content type to JSON
+    });
+
+    // POST request to create the rendezvous and send the email
+    return this.http.post<RendezVous>(`${this.apiUrl}?email=${email}`, rendezVous, { headers });
   }
 
   getRendezVousByVeterinaireId(veterinaireId: number): Observable<RendezVous[]> {

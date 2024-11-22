@@ -4,6 +4,7 @@ import { ShellVeterinaireComponent } from './shell-veterinaire/shell-veterinaire
 import { RendezVousVeterinaireComponent } from './rendez-vous-veterinaire/rendez-vous-veterinaire.component';
 import { ListAnimauxVetComponent } from './list-animaux-vet/list-animaux-vet.component';
 import { AjoutAnimalComponent } from './ajout-animal/ajout-animal.component';
+import { ModifierAnimauxComponent } from './modifier-animaux/modifier-animaux.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
       { path: 'rendez-vous', component: RendezVousVeterinaireComponent },
       { path: 'ListAnimauxVet', component: ListAnimauxVetComponent },
       { path: 'ajoutAnimal', component: AjoutAnimalComponent },
+      { path: 'modifierAnimal', component: ModifierAnimauxComponent },
 
     ]
   }

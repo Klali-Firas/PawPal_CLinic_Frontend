@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { race } from 'rxjs';
 import { Animaux, Utilisateurs } from 'src/app/interfaces/interfaces';
 import { AnimauxService } from 'src/app/services/animaux.service';
@@ -14,14 +15,19 @@ export class AjoutAnimalComponent implements OnInit {
   utilisateurs: Utilisateurs[] = [];
   selectedOwnerId: number | null = null;  // To bind the selected user
   animalForm: FormGroup;
-  constructor(private utilisateurService: UtilisateurService, private fb: FormBuilder, private animalService: AnimauxService) {
+
+  constructor(
+    private utilisateurService: UtilisateurService,
+    private fb: FormBuilder,
+    private animalService: AnimauxService,
+    private router: Router // Inject Router here
+  ) {
     this.animalForm = this.fb.group({
       nom: [null, Validators.required],
       race: [null],
       age: [null],
       historiqueMedical: [null],
       proprietaireId: [null, Validators.required],
-
     });
   }
 
@@ -35,8 +41,6 @@ export class AjoutAnimalComponent implements OnInit {
       this.utilisateurs = data.filter(user => user.role === 'proprietaire');
     });
   }
-
-
 
   onSubmit(): void {
     if (this.animalForm.valid) {
@@ -58,7 +62,8 @@ export class AjoutAnimalComponent implements OnInit {
       this.animalService.createAnimaux(newAnimal).subscribe({
         next: (response: any) => {
           console.log('Animal added', response);
-          // Optionally, reset the form or notify the user
+          // Redirect to listanimaux page after adding the animal
+          this.router.navigate(['/veterinaire/ListAnimauxVet']);
         },
         error: (error: any) => {
           console.error('Error adding animal', error);
@@ -66,9 +71,6 @@ export class AjoutAnimalComponent implements OnInit {
       });
     }
   }
-
-
-
 
 
 

@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: "proprietaire", loadChildren: () => import('./propriataire/propriataire.module').then(m => PropriataireModule) },
 
   { path: 'veterinaire', loadChildren: () => import('./veterinaire/veterinaire.module').then(m => m.VeterinaireModule) },
-  // { path: 'ListAnimauxVet', component: ListAnimauxVetComponent},
+  //{ path: 'veterinaire/ListAnimauxVet', component: ListAnimauxVetComponent},
   // { path: 'ajoutAnimal', component: AjoutAnimalComponent},
 
   // Home page after login
