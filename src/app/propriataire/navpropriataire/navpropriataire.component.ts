@@ -41,5 +41,11 @@ export class NavpropriataireComponent implements OnInit {
     });
   }
 
+  navigateToMyAppointments() {
+    this.router.navigate(['proprietaire', 'mes-rendez-vous']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
 
 }

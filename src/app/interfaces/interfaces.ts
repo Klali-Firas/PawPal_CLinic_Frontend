@@ -22,6 +22,7 @@ export interface Avis {
   note?: number | null
   commentaire?: string | null
   creeLe?: Date | null
+  proprietaireId: number
 }
 
 export interface Rappels {

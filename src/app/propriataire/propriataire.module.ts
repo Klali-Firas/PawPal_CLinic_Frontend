@@ -6,17 +6,21 @@ import { RendezvousComponent } from './rendezvous/rendezvous.component';
 import { ShellpropriataireComponent } from './shellpropriataire/shellpropriataire.component';
 import { NavpropriataireComponent } from './navpropriataire/navpropriataire.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MesRendezVousProprietaireComponent } from './mes-rendez-vous-proprietaire/mes-rendez-vous-proprietaire.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
   declarations: [
     RendezvousComponent,
     ShellpropriataireComponent,
-    NavpropriataireComponent
+    NavpropriataireComponent,
+    MesRendezVousProprietaireComponent
   ],
   imports: [
     CommonModule,
     PropriataireRoutingModule,
+    NgxPaginationModule,
     ReactiveFormsModule
   ]
 })
