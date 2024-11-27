@@ -6,6 +6,7 @@ import { ShellManagerComponent } from './shell-manager/shell-manager.component';
 import { NavManagerComponent } from './nav-manager/nav-manager.component';
 import { AppointmentsManagerComponent } from './appointments-manager/appointments-manager.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { DashboardManagerComponent } from './dashboard-manager/dashboard-manager.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 
     ShellManagerComponent,
     NavManagerComponent,
-    AppointmentsManagerComponent
+    AppointmentsManagerComponent,
+    DashboardManagerComponent
   ],
   imports: [
     CommonModule,

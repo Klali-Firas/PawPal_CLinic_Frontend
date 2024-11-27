@@ -32,4 +32,9 @@ export class RendezvousService {
   updateRendezVous(id: number, rendezVous: RendezVous): Observable<RendezVous> {
     return this.http.put<RendezVous>(`${this.apiUrl}/${id}`, rendezVous);
   }
+
+  exportRendezVousToCsv(): Observable<Blob> {
+    const url = `${this.apiUrl}/export/csv`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
 }
