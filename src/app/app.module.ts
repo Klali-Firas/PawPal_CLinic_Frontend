@@ -11,24 +11,26 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
-import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ShopComponent } from './shop/shop.component';
+import { ProductListComponent } from './shop/product-list/product-list.component';
+import { ProduitDetailComponent } from './shop/produit-detail/produit-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-
+    ShopComponent,
+    ProductListComponent,
+    ProduitDetailComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule, // Ensure FormsModule is imported here
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 3000, // Duration of the toast
@@ -40,10 +42,7 @@ import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
     }),
     NgxSpinnerModule.forRoot({
       type: 'ball-scale-multiple',
-    }),
-
-    FormsModule,
-
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

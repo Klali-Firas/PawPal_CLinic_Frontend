@@ -41,5 +41,11 @@ export class NavpropriataireComponent implements OnInit {
     });
   }
 
+  navigateToHistory() {
+    this.router.navigate(['proprietaire', 'historique']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
 
 }

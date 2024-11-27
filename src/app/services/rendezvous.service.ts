@@ -32,4 +32,8 @@ export class RendezvousService {
   updateRendezVous(id: number, rendezVous: RendezVous): Observable<RendezVous> {
     return this.http.put<RendezVous>(`${this.apiUrl}/${id}`, rendezVous);
   }
+  getRendezVousByUserId(userId: number): Observable<RendezVous[]> {
+    const url = `${this.apiUrl}/user/${userId}`;
+    return this.http.get<RendezVous[]>(url);
+  }
 }
