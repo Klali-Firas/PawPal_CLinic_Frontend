@@ -16,7 +16,7 @@
                 <td>{{ rv.animalId }}</td>
                 <td>{{ rv.dateRendezVous | date }}</td>
                 <td>{{ rv.statut }}</td>
-                <td>{{ rv.motif }}</td>
+                <td>{{ services.get(rv.motif)?.nomService}}</td>
                 <td>{{ rv.remarques }}</td>
             </tr>
         </tbody>

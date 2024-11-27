@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
-import { Animaux, Avis, RendezVous, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { Animaux, Avis, RendezVous, Services, Utilisateurs } from 'src/app/interfaces/interfaces';
 import { AnimauxService } from 'src/app/services/animaux.service';
 import { AvisService } from 'src/app/services/avis.service';
 import { RendezvousService } from 'src/app/services/rendezvous.service';
+import { ServiceService } from 'src/app/services/service.service';
 
 declare var $: any;
 
@@ -21,13 +22,15 @@ export class MesRendezVousProprietaireComponent implements OnInit {
   avisForm: FormGroup;
   selectedRendezVous: RendezVous | null = null;
   page: number = 1;
+  services: Map<number, Services> = new Map();
 
   constructor(
     private fb: FormBuilder,
     private rendezvousService: RendezvousService,
     private avisService: AvisService,
     private toastr: ToastrService,
-    private animauxService: AnimauxService
+    private animauxService: AnimauxService,
+    private serviceService: ServiceService
   ) {
     this.avisForm = this.fb.group({
       id: [0],
@@ -39,6 +42,7 @@ export class MesRendezVousProprietaireComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getAnimauxByProprietaireId();
+    this.getServices();
     this.getRendezVousByProprietaireId();
   }
 
@@ -113,5 +117,17 @@ export class MesRendezVousProprietaireComponent implements OnInit {
     } catch (error) {
       console.error('Error fetching animaux', error);
     }
+  }
+  getServices(): void {
+    this.serviceService.getAllServices().subscribe({
+      next: (response: Services[]) => {
+        response.forEach(service => {
+          this.services.set(service.id, service);
+        });
+      },
+      error: (error: any) => {
+        console.error('Error fetching services', error);
+      }
+    });
   }
 }
