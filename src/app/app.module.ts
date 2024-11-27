@@ -28,7 +28,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 3000, // Duration of the toast
@@ -45,6 +44,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
 
   ],
+
   providers: [],
   bootstrap: [AppComponent]
 })

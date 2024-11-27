@@ -13,6 +13,8 @@ import { DashBoardVetComponent } from './dash-board-vet/dash-board-vet.component
 import { ListAnimauxVetComponent } from './list-animaux-vet/list-animaux-vet.component';
 import { AjoutAnimalComponent } from './ajout-animal/ajout-animal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppModule } from '../app.module';
+import { SahredModule } from '../sahred/sahred.module';
 
 
 
@@ -24,9 +26,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RendezVousVeterinaireComponent,
     DashBoardVetComponent,
     ListAnimauxVetComponent,
-    AjoutAnimalComponent
+    AjoutAnimalComponent,
+
   ],
   imports: [
+    SahredModule,
     CommonModule,
     VeterinaireRoutingModule,
     NgxPaginationModule,

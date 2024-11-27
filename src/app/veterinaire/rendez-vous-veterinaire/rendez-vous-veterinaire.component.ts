@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Animaux, RendezVous, Services, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { Animaux, Avis, RendezVous, Services, Utilisateurs } from 'src/app/interfaces/interfaces';
 import { AnimauxService } from 'src/app/services/animaux.service';
+import { AvisService } from 'src/app/services/avis.service';
 import { RendezvousService } from 'src/app/services/rendezvous.service';
 import { ServiceService } from 'src/app/services/service.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
@@ -18,6 +19,7 @@ export class RendezVousVeterinaireComponent implements OnInit {
 
   user: Utilisateurs = JSON.parse(localStorage.getItem('user') || '{}');
   rendezVous: RendezVous[] = [];
+  avis: Map<number, Avis> = new Map();
   page: number = 1;
   animaux: Map<number, Animaux> = new Map();
   proprietaires: Map<number, Utilisateurs> = new Map();
@@ -29,6 +31,7 @@ export class RendezVousVeterinaireComponent implements OnInit {
     private fb: FormBuilder,
     private rendezVousService: RendezvousService,
     private animauxService: AnimauxService,
+    private avisService: AvisService,
     private userService: UtilisateurService,
     private serviceService: ServiceService,
     private toastr: ToastrService
@@ -50,6 +53,7 @@ export class RendezVousVeterinaireComponent implements OnInit {
       this.rendezVous = rendezVous;
       rendezVous.forEach(rendezVous => {
         this.getAnimalById(rendezVous.animalId);
+        this.getAvisByRendezVousId(rendezVous.id);
       });
     });
   }
@@ -72,6 +76,14 @@ export class RendezVousVeterinaireComponent implements OnInit {
       services.forEach(service => {
         this.services.set(service.id, service);
       });
+    });
+  }
+
+  getAvisByRendezVousId(rendezVousId: number) {
+    this.avisService.getAvisByRendezVousId(rendezVousId).subscribe(avis => {
+      if (avis.length > 0) {
+        this.avis.set(rendezVousId, avis[0]);
+      }
     });
   }
 

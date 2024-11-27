@@ -8,7 +8,7 @@ import { NavpropriataireComponent } from './navpropriataire/navpropriataire.comp
 import { ReactiveFormsModule } from '@angular/forms';
 import { MesRendezVousProprietaireComponent } from './mes-rendez-vous-proprietaire/mes-rendez-vous-proprietaire.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { StarRatingComponent } from '../components/star-rating/star-rating.component';
+import { SahredModule } from '../sahred/sahred.module';
 
 
 @NgModule({
@@ -17,9 +17,10 @@ import { StarRatingComponent } from '../components/star-rating/star-rating.compo
     ShellpropriataireComponent,
     NavpropriataireComponent,
     MesRendezVousProprietaireComponent,
-    StarRatingComponent
+
   ],
   imports: [
+    SahredModule,
     CommonModule,
     PropriataireRoutingModule,
     NgxPaginationModule,

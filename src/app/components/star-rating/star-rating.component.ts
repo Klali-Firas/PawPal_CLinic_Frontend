@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -14,7 +14,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class StarRatingComponent implements ControlValueAccessor {
-  rating: number = 0;
+  @Input() readOnly: boolean = false;
+  @Input() rating: number = 0;
   stars: boolean[] = Array(5).fill(false);
 
   private onChange = (rating: number) => { };
@@ -29,10 +30,12 @@ export class StarRatingComponent implements ControlValueAccessor {
   }
 
   selectRating(rating: number) {
-    this.rating = rating;
-    this.updateStars();
-    this.onChange(this.rating);
-    this.onTouched();
+    if (!this.readOnly) {
+      this.rating = rating;
+      this.updateStars();
+      this.onChange(this.rating);
+      this.onTouched();
+    }
   }
 
   writeValue(rating: number): void {
