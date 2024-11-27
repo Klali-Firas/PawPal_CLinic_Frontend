@@ -132,4 +132,8 @@ export class MesRendezVousProprietaireComponent implements OnInit {
       }
     });
   }
+
+  getAnimalName(animalId: number): string {
+    return this.animaux.find(a => a.id === animalId)?.nom || '';
+  }
 }

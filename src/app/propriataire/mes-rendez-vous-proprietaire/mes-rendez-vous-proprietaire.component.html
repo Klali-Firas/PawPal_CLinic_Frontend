@@ -13,7 +13,7 @@
         <tbody>
             <tr *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 5, currentPage: page }"
                 (click)="rv.statut === 'termine' ? openModal(rv) : null">
-                <td>{{ rv.animalId }}</td>
+                <td>{{ getAnimalName(rv.animalId) }}</td>
                 <td>{{ rv.dateRendezVous | date }}</td>
                 <td>{{ rv.statut }}</td>
                 <td>{{ services.get(rv.motif)?.nomService }}</td>
