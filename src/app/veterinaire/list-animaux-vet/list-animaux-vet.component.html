@@ -18,19 +18,70 @@
     </thead>
     <tbody>
       <tr *ngFor="let animal of animauxList">
-        <td>{{ animal.nom}}</td>
+        <td>{{ animal.nom }}</td>
         <td>{{ animal.race }}</td>
-        <td>{{ animal.age}}</td>
-        <td>{{ animal.historiqueMedical}}</td>
-        <td>{{ proprietaires.get(animal.id)?.nom +' '+proprietaires.get(animal.id)?.prenom }}</td>
-        <td>{{ animal.creeLe | date}}</td>
-        <!-- Add more fields as needed -->
+        <td>{{ animal.age }}</td>
+        <td>{{ animal.historiqueMedical }}</td>
+        <td>{{ proprietaires.get(animal.id)?.nom + ' ' + proprietaires.get(animal.id)?.prenom }}</td>
+        <td>{{ animal.creeLe | date }}</td>
         <td>
           <a href="veterinaire/modifierAnimal" class="btn-modifier btn-sm me-2">Modifier</a>
-          <button class="btn-supprimer btn-sm">Archiver </button>
+          <button class="btn-supprimer btn-sm">Archiver</button>
+          <button class="btn-historique btn-sm" (click)="voirHistorique(animal)" data-toggle="modal" data-target="#historiqueModal">Voir Historique</button>
         </td>
       </tr>
     </tbody>
-
   </table>
+
+  <!-- Modal -->
+  <div class="modal fade" id="historiqueModal" tabindex="-1" role="dialog" aria-labelledby="historiqueModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="historiqueModalLabel">Historique de {{ selectedAnimal?.nom }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="selectedAnimal">
+            <p class="mb-1"><strong>Race:</strong> {{ selectedAnimal.race }}</p>
+            <p class="mb-1"><strong>Age:</strong> {{ selectedAnimal.age }}</p>
+            <p class="mb-1"><strong>Historique Médical:</strong> {{ selectedAnimal.historiqueMedical }}</p>
+            <div *ngIf="getRendezVousForAnimal(selectedAnimal.id).length > 0; else noRendezVous">
+              <h4 class="mt-3">Rendez-vous:</h4>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th>Motif</th>
+                    <th>Créé Le</th>
+                    <th>Remarques</th>
+                    <th>Veterinaire</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let rv of getRendezVousForAnimal(selectedAnimal.id)">
+                    <td>{{ rv.dateRendezVous | date:'short' }}</td>
+                    <td>{{ rv.statut }}</td>
+                    <td>{{ rv.motif }}</td>
+                    <td>{{ rv.creeLe | date:'short' }}</td>
+                    <td>{{ rv.remarques }}</td>
+                    <td>{{ veterinaires.get(rv.veterinaireId!)?.nom + " " + veterinaires.get(rv.veterinaireId!)?.prenom }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <ng-template #noRendezVous>
+              <p class="text-muted">No appointments found for this animal.</p>
+            </ng-template>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
