@@ -16,7 +16,7 @@
                 <td>{{ rv.animalId }}</td>
                 <td>{{ rv.dateRendezVous | date }}</td>
                 <td>{{ rv.statut }}</td>
-                <td>{{ services.get(rv.motif)?.nomService}}</td>
+                <td>{{ services.get(rv.motif)?.nomService }}</td>
                 <td>{{ rv.remarques }}</td>
             </tr>
         </tbody>
@@ -40,8 +40,7 @@
                 <form [formGroup]="avisForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
                         <label for="note">Note</label>
-                        <input type="number" id="note" formControlName="note" class="form-control" min="1" max="5"
-                            required>
+                        <app-star-rating formControlName="note"></app-star-rating>
                         <div *ngIf="avisForm.get('note')?.invalid && avisForm.get('note')?.touched" class="text-danger">
                             La note est requise et doit être entre 1 et 5.
                         </div>

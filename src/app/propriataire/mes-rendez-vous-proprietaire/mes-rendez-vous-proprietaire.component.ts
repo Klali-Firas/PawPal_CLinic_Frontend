@@ -111,6 +111,7 @@ export class MesRendezVousProprietaireComponent implements OnInit {
       }
     }
   }
+
   async getAnimauxByProprietaireId(): Promise<void> {
     try {
       this.animaux = await firstValueFrom(this.animauxService.getAnimauxByProprietaireId(this.user.id));
@@ -118,6 +119,7 @@ export class MesRendezVousProprietaireComponent implements OnInit {
       console.error('Error fetching animaux', error);
     }
   }
+
   getServices(): void {
     this.serviceService.getAllServices().subscribe({
       next: (response: Services[]) => {
