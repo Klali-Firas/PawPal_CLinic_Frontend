@@ -8,6 +8,7 @@ const routes: Routes = [
   {path: "" , component:ShellpropriataireComponent, children:[
   {path:"rendezvous", component:RendezvousComponent},
   {path:"historique", component:HistoriqueAniComponent},
+  
   ]}
 ];
 

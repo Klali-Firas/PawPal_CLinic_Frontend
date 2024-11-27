@@ -38,9 +38,16 @@
                 <li class="nav-item"><a href="gallery.html" class="nav-link">Galerie</a></li>
                 <li class="nav-item"><a href="pricing.html" class="nav-link">Tarifs</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li class="nav-item text-center "><a (click)="login()"
-                        class="nav-link border border-success rounded py-2 d-flex align-items-center px-2"><img
-                            src="assets/images/google.png" style="width: 20px; margin-right: 5px;" />Se connecter</a>
+                <li class="nav-item"><a routerLink="/shop" class="nav-link">Shop</a></li>
+                <li class="nav-item">
+                    <a routerLink="/shop/cart" class="nav-link">
+                        <span class="fa fa-shopping-cart"></span>
+                    </a>
+                </li>
+                <li class="nav-item text-center">
+                    <a (click)="login()" class="nav-link border border-success rounded py-2 d-flex align-items-center px-2">
+                        <img src="assets/images/google.png" style="width: 20px; margin-right: 5px;" />Se connecter
+                    </a>
                 </li>
             </ul>
         </div>

@@ -1,1 +1,17 @@
-<p>produit-detail works!</p>
+<div class="container mt-4" *ngIf="product">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="text-center">{{ product.nomProduit }}</h2>
+        <div class="card mb-4">
+          <img src="{{ product.image }}" class="card-img-top" alt="{{ product.nomProduit }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ product.nomProduit }}</h5>
+            <p class="card-text">Price: {{ product.prix | currency }}</p>
+            <p class="card-text">Description: {{ product.description }}</p>
+            <p class="card-text">Stock: {{ product.quantiteStock }}</p>
+            <button class="btn btn-success btn-sm" (click)="addToCart(product)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -14,8 +14,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShopComponent } from './shop/shop.component';
 import { ProductListComponent } from './shop/product-list/product-list.component';
-import { ProduitDetailComponent } from './shop/produit-detail/produit-detail.component';
-
+import { ProductDetailComponent } from './shop/produit-detail/produit-detail.component';import { CommonModule } from '@angular/common';
+import { CartComponent } from './shop/cart/cart.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +23,8 @@ import { ProduitDetailComponent } from './shop/produit-detail/produit-detail.com
     HomeComponent,
     ShopComponent,
     ProductListComponent,
-    ProduitDetailComponent
+    ProductDetailComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +32,7 @@ import { ProduitDetailComponent } from './shop/produit-detail/produit-detail.com
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CommonModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 3000, // Duration of the toast
