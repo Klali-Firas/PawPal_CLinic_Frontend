@@ -93,7 +93,7 @@ export class CartComponent implements OnInit {
       ($('#checkoutModal') as any).modal('hide'); // Close the modal
     } else {
       // User is not logged in, navigate to the login page
-      this.router.navigate(['/login']);
+      this.authService.login();
     }
   }
 }
