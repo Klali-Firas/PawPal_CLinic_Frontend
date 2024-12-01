@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product } from './product.service'; // Adjust the import path as necessary
+import { Produits } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -7,9 +7,9 @@ import { Product } from './product.service'; // Adjust the import path as necess
 export class CartService {
   private cartKey = 'cart';
 
-  constructor() {}
+  constructor() { }
 
-  addToCart(product: Product): void {
+  addToCart(product: Produits): void {
     const cart = this.getCart();
     const existingProduct = cart.find(p => p.id === product.id);
     if (existingProduct) {
@@ -22,7 +22,7 @@ export class CartService {
     console.log('Product added to cart:', product);
   }
 
-  getCart(): Product[] {
+  getCart(): Produits[] {
     const cart = localStorage.getItem(this.cartKey);
     return cart ? JSON.parse(cart) : [];
   }
@@ -37,11 +37,11 @@ export class CartService {
     localStorage.removeItem(this.cartKey);
   }
 
-  public saveCart(cart: Product[]): void {
+  public saveCart(cart: Produits[]): void {
     localStorage.setItem(this.cartKey, JSON.stringify(cart));
   }
 
-  updateCart(cart: Product[]): void {
+  updateCart(cart: Produits[]): void {
     this.saveCart(cart);
   }
 }

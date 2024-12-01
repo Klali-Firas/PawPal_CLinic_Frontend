@@ -44,6 +44,6 @@ export class AuthService {
     });
   }
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('authToken');
+    return !!localStorage.getItem('user');
   }
 }

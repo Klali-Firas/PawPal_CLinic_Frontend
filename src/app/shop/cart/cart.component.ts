@@ -2,9 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.Service'; // Adjust the import path as necessary
 import { AuthService } from '../../services/auth.service'; // Import AuthService
-import { CommandeProduitService, CommandeProduit } from '../../services/commandeproduit.service'; // Import CommandeProduitService
-import { Product } from 'src/app/services/product.service';
-import * as $ from 'jquery'; // Import jQuery
+import { CommandeProduitService } from '../../services/commandeproduit.service'; // Import CommandeProduitService
+import { CommandeProduits, Commandes, Produits, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { CommandeService } from 'src/app/services/commande.service';
+import { ToastrService } from 'ngx-toastr';
+import { firstValueFrom } from 'rxjs';
+
+declare var $: any;
 
 @Component({
   selector: 'app-cart',
@@ -12,15 +16,18 @@ import * as $ from 'jquery'; // Import jQuery
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  cart: Product[] = [];
+  cart: Produits[] = [];
   totalPrice: number = 0;
+  user: Utilisateurs = JSON.parse(localStorage.getItem('user') || '{}');
 
   constructor(
     private cartService: CartService,
     private authService: AuthService, // Inject AuthService
     private commandeProduitService: CommandeProduitService, // Inject CommandeProduitService
-    private router: Router
-  ) {}
+    private router: Router,
+    private commandeService: CommandeService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.cart = this.cartService.getCart();
@@ -64,18 +71,37 @@ export class CartComponent implements OnInit {
   }
 
   continueShopping(): void {
-    this.router.navigate(['/product-list']); // Navigate to the product list page
+    const currentUrl = this.router.url;
+    const activeRoute = currentUrl.split('/').includes('proprietaire') ? 'proprietaire' : 'client';
+
+    if (activeRoute === 'proprietaire') {
+      this.router.navigate(['/proprietaire/shop']); // Navigate to the shop page
+    } else {
+      this.router.navigate(['/shop']); // Navigate to the product list page
+    }
   }
 
-  confirmOrder(): void {
+  async confirmOrder(): Promise<void> {
     if (this.authService.isLoggedIn()) {
-      // User is logged in, save the order to the database
-      const order: CommandeProduit[] = this.cart.map(product => ({
+
+      //cretae commande
+      const commande: Commandes =
+      {
         id: 0, // Assuming the backend will generate the ID
-        productId: product.id,
-        quantity: product.quantity || 1,
-        price: product.prix
+        proprietaireId: this.user.id,
+        dateCommande: new Date(),
+        statut: 'en_attente'
+      };
+      var createdCommande: Commandes = await firstValueFrom(this.commandeService.createCommande(commande));
+      // User is logged in, save the order to the database
+      const order: CommandeProduits[] = this.cart.map(product => ({
+        id: 0, // Assuming the backend will generate the ID
+        produitId: product.id,
+        quantite: product.quantity!,
+        commandeId: createdCommande.id
+
       }));
+
 
       // Send each CommandeProduit object individually
       order.forEach(commandeProduit => {
@@ -90,7 +116,10 @@ export class CartComponent implements OnInit {
       });
 
       this.clearCart();
-      ($('#checkoutModal') as any).modal('hide'); // Close the modal
+      $('#checkoutModal').modal('hide'); // Close the modal
+
+      // Show a success message
+      this.toastr.success('Commande passée avec succès!', 'Succès');
     } else {
       // User is not logged in, navigate to the login page
       this.authService.login();

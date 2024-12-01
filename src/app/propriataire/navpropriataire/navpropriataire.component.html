@@ -33,14 +33,16 @@
         </button>
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a href="index.html" class="nav-link">Dashboard</a></li>
                 <li class="nav-item" data-route="rendezvous"><a (click)="navigateToAppointments()" class="nav-link"
                         role="button">Rendez Vous</a></li>
-                <li class="nav-item"><a href="vet.html" class="nav-link">Services</a></li>
-                <li class="nav-item" data-route="historique"><a (click)="navigateToHistory()" class="nav-link">Animals</a></li>
-                <li class="nav-item" data-route="shop"><a (click)="navigateToShop()" class="nav-link">Shop</a></li> <!-- New Shop link -->
-                <li class="nav-item">
-                    <a routerLink="/shop/cart" class="nav-link">
+                <li class="nav-item" data-route="historique"><a (click)="navigateToHistory()"
+                        class="nav-link">Animals</a></li>
+                <li class="nav-item" data-route="shop"><a (click)="navigateToShop()" class="nav-link">Shop</a></li>
+                <li class="nav-item" data-route="mes-commandes"><a (click)="navigateToOrders()" class="nav-link">Mes
+                        Commandes</a>
+                    <!-- New Shop link -->
+                <li class="nav-item" data-route="cart">
+                    <a (click)="navigateToCart()" class="nav-link">
                         <span class="fa fa-shopping-cart"></span>
                     </a>
                 </li>
@@ -48,13 +50,14 @@
                     <a class="nav-link dropdown-toggle d-flex align-items-center"
                         style="padding-bottom: calc( 36.8px - ( 30px - 25.2px ) );" href="#" id="navbarDropdown"
                         role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-user"></span> Profile
+                        <img [src]="photo" alt="Profile Picture" class="rounded-circle mr-1" width="30" height="30">
+                        {{ user.nom }} {{ user.prenom }}
+                        <div class="dropdown-menu dropdown-menu-right px-2 shadow" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" (click)="onLogout()" style="background-color: white; color: red;"
+                                onmouseover="this.style.backgroundColor='red', this.style.color='white'"
+                                onmouseout="this.style.backgroundColor='white',this.style.color='red'">Déconnexion</a>
+                        </div>
                     </a>
-                    
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Settings</a>
-                        <a class="dropdown-item" href="#">Logout</a>
-                    </div>
                 </li>
             </ul>
         </div>

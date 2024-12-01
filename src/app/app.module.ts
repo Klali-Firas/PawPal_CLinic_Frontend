@@ -14,7 +14,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShopComponent } from './shop/shop.component';
 import { ProductListComponent } from './shop/product-list/product-list.component';
-import { ProductDetailComponent } from './shop/produit-detail/produit-detail.component';import { CommonModule } from '@angular/common';
+import { ProductDetailComponent } from './shop/produit-detail/produit-detail.component'; import { CommonModule } from '@angular/common';
 import { CartComponent } from './shop/cart/cart.component';
 @NgModule({
   declarations: [
@@ -37,7 +37,7 @@ import { CartComponent } from './shop/cart/cart.component';
     ToastrModule.forRoot({
       timeOut: 3000, // Duration of the toast
       positionClass: 'toast-bottom-right', // Position of the toast
-      preventDuplicates: true, // Prevent duplicate toasts
+      preventDuplicates: false, // Prevent duplicate toasts
       progressBar: true, // Show progress bar
       closeButton: true, // Show close button
       tapToDismiss: true, // Dismiss on tap

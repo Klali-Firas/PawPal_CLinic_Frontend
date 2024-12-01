@@ -47,10 +47,22 @@ export class NavpropriataireComponent implements OnInit {
     });
   }
 
-  navigateToShop(){
+  navigateToShop() {
     this.router.navigate(['proprietaire', 'shop']).then(() => {
       this.updateActiveClass();
-      });
+    });
+  }
+
+  navigateToCart() {
+    this.router.navigate(['proprietaire', 'shop', 'cart']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
+  navigateToOrders() {
+    this.router.navigate(['proprietaire', 'mes-commandes']).then(() => {
+      this.updateActiveClass();
+    });
   }
 
 }

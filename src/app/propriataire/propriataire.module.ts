@@ -8,19 +8,23 @@ import { NavpropriataireComponent } from './navpropriataire/navpropriataire.comp
 import { ReactiveFormsModule } from '@angular/forms';
 import { HistoriqueAniComponent } from './historique-ani/historique-ani.component';
 import { FormsModule } from '@angular/forms';
+import { MesCommandesComponent } from './mes-commandes/mes-commandes.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
     RendezvousComponent,
     ShellpropriataireComponent,
     NavpropriataireComponent,
-    HistoriqueAniComponent
+    HistoriqueAniComponent,
+    MesCommandesComponent
   ],
   imports: [
     CommonModule,
     PropriataireRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ],
   exports: [
     HistoriqueAniComponent

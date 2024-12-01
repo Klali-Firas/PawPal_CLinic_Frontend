@@ -4,14 +4,21 @@ import { ShellpropriataireComponent } from './shellpropriataire/shellpropriatair
 import { RendezvousComponent } from './rendezvous/rendezvous.component';
 import { HistoriqueAniComponent } from './historique-ani/historique-ani.component';
 import { ShopComponent } from '../shop/shop.component';
+import { CartComponent } from '../shop/cart/cart.component';
+import { MesCommandesComponent } from './mes-commandes/mes-commandes.component';
 
 const routes: Routes = [
-  {path: "" , component:ShellpropriataireComponent, children:[
-  {path:"rendezvous", component:RendezvousComponent},
-  {path:"historique", component:HistoriqueAniComponent},
-  {path:"shop",component:ShopComponent}
-  
-  ]}
+  {
+    path: "", component: ShellpropriataireComponent, children: [
+      { path: "", redirectTo: "shop", pathMatch: "full" },
+      { path: "rendezvous", component: RendezvousComponent },
+      { path: "historique", component: HistoriqueAniComponent },
+      { path: "shop", component: ShopComponent },
+      { path: "shop/cart", component: CartComponent },
+      { path: "mes-commandes", component: MesCommandesComponent }
+
+    ]
+  }
 ];
 
 @NgModule({

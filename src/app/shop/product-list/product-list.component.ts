@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProductService, Product } from 'src/app/services/product.service';
-import { CartService } from '../../services/cart.Service'; // Adjust the import path as necessary
+import { CartService } from 'src/app/services/cart.Service';  // Adjust the import path as necessary
+import { ToastrService } from 'ngx-toastr';
+import { Produits } from 'src/app/interfaces/interfaces';
+import { ProduitService } from 'src/app/services/produit.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-product-list',
@@ -9,15 +12,21 @@ import { CartService } from '../../services/cart.Service'; // Adjust the import 
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  products: Product[] = [];
+  products: Produits[] = [];
+  selectedProduct: Produits | null = null;
   errorMessage: string = '';
 
-  constructor(private router: Router, private productService: ProductService, private cartService: CartService) {}
+  constructor(
+    private productService: ProduitService,
+    private cartService: CartService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
-    this.productService.getAllProducts().subscribe(
+    this.productService.getAllProduits().subscribe(
       (data) => {
         this.products = data;
+        console.log(data);
       },
       (error) => {
         this.errorMessage = error;
@@ -26,11 +35,20 @@ export class ProductListComponent implements OnInit {
     );
   }
 
-  viewDetails(productId: number) {
-    this.router.navigate(['/product-detail', productId]);
+  openProductModal(productId: number): void {
+    this.productService.getProduitById(productId).subscribe(
+      (product) => {
+        this.selectedProduct = product;
+        $('#productModal').modal('show');
+      },
+      (error) => {
+        console.error('Error fetching product details', error);
+      }
+    );
   }
 
-  addToCart(product: Product) {
+  addToCart(product: Produits): void {
     this.cartService.addToCart(product);
+    this.toastr.success(product.nomProduit + ' ajouté au panier');
   }
 }

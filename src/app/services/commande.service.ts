@@ -2,14 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-export interface Commande {
-  id: number;
-  // Add other properties as per your CommandeDto
-  // For example:
-  // productName: string;
-  // quantity: number;
-  // price: number;
-}
+import { Commandes } from '../interfaces/interfaces';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,48 +11,29 @@ export interface Commande {
 export class CommandeService {
   private apiUrl = 'http://localhost:4332/api/public/commandes';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getAllCommandes(): Observable<Commande[]> {
-    return this.http.get<Commande[]>(this.apiUrl).pipe(
-      catchError(this.handleError)
-    );
+  getAllCommandes(): Observable<Commandes[]> {
+    return this.http.get<Commandes[]>(this.apiUrl);
   }
 
-  getCommandeById(id: number): Observable<Commande> {
-    return this.http.get<Commande>(`${this.apiUrl}/${id}`).pipe(
-      catchError(this.handleError)
-    );
+  getCommandeById(id: number): Observable<Commandes> {
+    return this.http.get<Commandes>(`${this.apiUrl}/${id}`);
   }
 
-  createCommande(commande: Commande): Observable<Commande> {
-    return this.http.post<Commande>(this.apiUrl, commande).pipe(
-      catchError(this.handleError)
-    );
+  createCommande(commande: Commandes): Observable<Commandes> {
+    return this.http.post<Commandes>(this.apiUrl, commande);
   }
 
-  updateCommande(id: number, commande: Commande): Observable<Commande> {
-    return this.http.put<Commande>(`${this.apiUrl}/${id}`, commande).pipe(
-      catchError(this.handleError)
-    );
+  updateCommande(id: number, commande: Commandes): Observable<Commandes> {
+    return this.http.put<Commandes>(`${this.apiUrl}/${id}`, commande);
   }
 
   deleteCommande(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error!';
-    if (error.error instanceof ErrorEvent) {
-      // Client-side errors
-      errorMessage = `Client-side error: ${error.error.message}`;
-    } else {
-      // Server-side errors
-      errorMessage = `Server-side error: Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    return throwError(errorMessage);
+  getCommandesByProprietaireId(id: number): Observable<Commandes[]> {
+    return this.http.get<Commandes[]>(`${this.apiUrl}/user/${id}`);
   }
-  
 }
