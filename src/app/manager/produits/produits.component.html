@@ -1,0 +1,104 @@
+<div class="container mt-4">
+    <h2>Gestion des Produits</h2>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">Quantité en Stock</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let produit of produits">
+                        <td>{{ produit.nomProduit }}</td>
+                        <td>{{ produit.description }}</td>
+                        <td>{{ produit.prix | currency }}</td>
+                        <td>{{ produit.quantiteStock }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" (click)="openProduitModal(produit)">Modifier</button>
+                            <button class="btn btn-danger btn-sm" (click)="deleteProduit(produit.id)">Archiver</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="btn btn-success btn-lg rounded-circle" style="position: fixed; bottom: 20px; right: 20px;"
+        (click)="openProduitModal()">
+        <i class="fa fa-plus"></i>
+    </button>
+</div>
+
+<!-- Produit Modal -->
+<div class="modal fade" id="produitModal" tabindex="-1" role="dialog" aria-labelledby="produitModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="produitModalLabel">{{ isEditMode ? 'Modifier Produit' : 'Ajouter Produit' }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="produitForm" (ngSubmit)="saveProduit()">
+                    <div class="form-group">
+                        <label for="nomProduit">Nom du Produit</label>
+                        <input type="text" id="nomProduit" formControlName="nomProduit" class="form-control" required>
+                        <div *ngIf="produitForm.get('nomProduit')?.invalid && produitForm.get('nomProduit')?.touched"
+                            class="text-danger">
+                            <div *ngIf="produitForm.get('nomProduit')?.errors?.['required']">Le nom du produit est
+                                requis.</div>
+                            <div *ngIf="produitForm.get('nomProduit')?.errors?.['minlength']">Le nom du produit doit
+                                comporter au moins 3 caractères.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" formControlName="description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="prix">Prix</label>
+                        <input type="number" id="prix" formControlName="prix" class="form-control" required>
+                        <div *ngIf="produitForm.get('prix')?.invalid && produitForm.get('prix')?.touched"
+                            class="text-danger">
+                            <div *ngIf="produitForm.get('prix')?.errors?.['required']">Le prix est requis.</div>
+                            <div *ngIf="produitForm.get('prix')?.errors?.['min']">Le prix doit être supérieur à 0.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantiteStock">Quantité en Stock</label>
+                        <input type="number" id="quantiteStock" formControlName="quantiteStock" class="form-control"
+                            required>
+                        <div *ngIf="produitForm.get('quantiteStock')?.invalid && produitForm.get('quantiteStock')?.touched"
+                            class="text-danger">
+                            <div *ngIf="produitForm.get('quantiteStock')?.errors?.['required']">La quantité en stock est
+                                requise.</div>
+                            <div *ngIf="produitForm.get('quantiteStock')?.errors?.['min']">La quantité en stock doit
+                                être supérieure ou égale à 0.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image URL</label>
+                        <input type="text" id="image" formControlName="image" class="form-control" required>
+                        <div *ngIf="produitForm.get('image')?.invalid && produitForm.get('image')?.touched"
+                            class="text-danger">
+                            <div *ngIf="produitForm.get('image')?.errors?.['required']">L'URL de l'image est requise.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Mettre à jour' : 'Ajouter'
+                            }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

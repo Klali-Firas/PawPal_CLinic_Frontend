@@ -30,5 +30,8 @@ export class UtilisateurService {
   getAllUtilisateurs(): Observable<Utilisateurs[]> {
     return this.http.get<Utilisateurs[]>(`${this.apiUrl}`);
   }
+  getLoggedInUser(): Observable<Utilisateurs> {
+    return this.http.get<Utilisateurs>(`${this.apiUrl}/loggedInUser`);
+  }
 }
 

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Animaux, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { Animaux, RendezVous, Utilisateurs } from 'src/app/interfaces/interfaces';
+
+import { firstValueFrom } from 'rxjs';
 import { AnimauxService } from 'src/app/services/animaux.service';
+import { RendezvousService } from 'src/app/services/rendezvous.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
 
 @Component({
@@ -12,21 +15,26 @@ import { UtilisateurService } from 'src/app/services/utilisateur.service';
 export class ListAnimauxVetComponent implements OnInit {
   animauxList: Animaux[] = [];
   proprietaires: Map<number, Utilisateurs> = new Map<number, Utilisateurs>();
+
   showEditAnimalPopup = false;
   editAnimalForm: FormGroup;
   selectedAnimal: Animaux | null = null;
+  selectedAnimal?: Animaux;
+  allRendezVous: RendezVous[] = [];
+  veterinaires: Map<number, Utilisateurs> = new Map();
 
   constructor(
     private fb: FormBuilder,
     private animauxService: AnimauxService,
-    private userService: UtilisateurService
-  ) {
-    this.editAnimalForm = this.fb.group({
+    private userService: UtilisateurService,
+    private rendezvousService: RendezvousService,
+    private utilisateurService: UtilisateurService
+  ) { this.editAnimalForm = this.fb.group({
       nom: ['', Validators.required],
       race: [''],
       age: [null, [Validators.required, this.nonNegativeValidator]],
-    });
-  }
+    }); }
+
 
   ngOnInit(): void {
     this.animauxService.getAllAnimaux().subscribe({
@@ -38,6 +46,9 @@ export class ListAnimauxVetComponent implements OnInit {
       },
       error: (error) => console.error('There was an error!', error)
     });
+
+    this.getAllRendezVous();
+    this.getAllVeterinaires();
   }
 
   getProprietaireByAnimalId(id: number): void {
@@ -46,6 +57,7 @@ export class ListAnimauxVetComponent implements OnInit {
       error: (error) => console.error('There was an error!', error)
     });
   }
+
 
   openEditAnimalPopup(animal: Animaux): void {
     this.selectedAnimal = animal;
@@ -86,5 +98,30 @@ export class ListAnimauxVetComponent implements OnInit {
 
   nonNegativeValidator(control: AbstractControl): ValidationErrors | null {
     return control.value !== null && control.value < 0 ? { nonNegative: true } : null;
+
+  voirHistorique(animal: Animaux): void {
+    this.selectedAnimal = animal;
+  }
+
+  async getAllRendezVous(): Promise<void> {
+    try {
+      this.allRendezVous = await firstValueFrom(this.rendezvousService.getAllRendezVous());
+    } catch (error) {
+      console.error('Error getting rendez-vous', error);
+    }
+  }
+
+  async getAllVeterinaires(): Promise<void> {
+    try {
+      const veterinaires = await firstValueFrom(this.utilisateurService.getAllVeterinaires());
+      veterinaires.forEach(vet => this.veterinaires.set(vet.id, vet));
+    } catch (error) {
+      console.error('Error getting veterinaires', error);
+    }
+  }
+
+  getRendezVousForAnimal(animalId: number): RendezVous[] {
+    return this.allRendezVous.filter(r => r.animalId === animalId);
+
   }
 }

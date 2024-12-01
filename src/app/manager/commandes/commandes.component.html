@@ -1,0 +1,80 @@
+<div class="container mt-4">
+    <h2>Liste des Commandes</h2>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Statut</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let commande of commandes | paginate: { itemsPerPage: 5, currentPage: page }"
+                        (click)="openCommandeModal(commande)">
+                        <td>{{ commande.dateCommande | date }}</td>
+                        <td>{{ commande.statut }}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" (click)="openCommandeModal(commande)">Voir
+                                Détails</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Commande Details Modal -->
+<div class="modal fade" id="commandeModal" tabindex="-1" role="dialog" aria-labelledby="commandeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commandeModalLabel">Détails de la Commande</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" *ngIf="selectedCommande">
+                <h5>Commande ID: {{ selectedCommande.id }}</h5>
+                <p><strong>Date:</strong> {{ selectedCommande.dateCommande | date }}</p>
+                <p><strong>Statut:</strong>
+                    <select [(ngModel)]="selectedCommande.statut" class="form-control">
+                        <option value="en_attente">En attente</option>
+                        <option value="pret">Prêt</option>
+                        <option value="termine">Livrée</option>
+                        <option value="annule">Annulée</option>
+                    </select>
+                </p>
+                <hr>
+                <h5>Produits</h5>
+                <table class="table table-striped">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">Produit</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let cp of commandeProduits">
+                            <td>{{ produits.get(cp.produitId)?.nomProduit }}</td>
+                            <td>{{ cp.quantite }}</td>
+                            <td>{{ produits.get(cp.produitId)?.prix | currency }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary" (click)="updateCommandeStatus()">Mettre à jour le
+                    statut</button>
+            </div>
+        </div>
+    </div>
+</div>

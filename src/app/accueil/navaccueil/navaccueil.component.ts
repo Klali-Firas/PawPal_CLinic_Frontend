@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./navaccueil.component.css']
 })
 export class NavaccueilComponent implements OnInit {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
   ngOnInit(): void {
   }
 
@@ -15,4 +16,15 @@ export class NavaccueilComponent implements OnInit {
     sessionStorage.setItem('role', 'proprietaire');
     this.authService.login();
   }
+
+  navigateToShop() {
+    this.router.navigate(['shop']).then(() => {
+    });
+  }
+
+  navigateToCart() {
+    this.router.navigate(['shop', 'cart']).then(() => {
+    });
+  }
+
 }
