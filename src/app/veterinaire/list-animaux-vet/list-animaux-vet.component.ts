@@ -19,7 +19,6 @@ export class ListAnimauxVetComponent implements OnInit {
   showEditAnimalPopup = false;
   editAnimalForm: FormGroup;
   selectedAnimal: Animaux | null = null;
-  selectedAnimal?: Animaux;
   allRendezVous: RendezVous[] = [];
   veterinaires: Map<number, Utilisateurs> = new Map();
 
@@ -29,11 +28,13 @@ export class ListAnimauxVetComponent implements OnInit {
     private userService: UtilisateurService,
     private rendezvousService: RendezvousService,
     private utilisateurService: UtilisateurService
-  ) { this.editAnimalForm = this.fb.group({
+  ) {
+    this.editAnimalForm = this.fb.group({
       nom: ['', Validators.required],
       race: [''],
       age: [null, [Validators.required, this.nonNegativeValidator]],
-    }); }
+    });
+  }
 
 
   ngOnInit(): void {
@@ -98,11 +99,10 @@ export class ListAnimauxVetComponent implements OnInit {
 
   nonNegativeValidator(control: AbstractControl): ValidationErrors | null {
     return control.value !== null && control.value < 0 ? { nonNegative: true } : null;
-
+  }
   voirHistorique(animal: Animaux): void {
     this.selectedAnimal = animal;
   }
-
   async getAllRendezVous(): Promise<void> {
     try {
       this.allRendezVous = await firstValueFrom(this.rendezvousService.getAllRendezVous());
@@ -110,7 +110,6 @@ export class ListAnimauxVetComponent implements OnInit {
       console.error('Error getting rendez-vous', error);
     }
   }
-
   async getAllVeterinaires(): Promise<void> {
     try {
       const veterinaires = await firstValueFrom(this.utilisateurService.getAllVeterinaires());
