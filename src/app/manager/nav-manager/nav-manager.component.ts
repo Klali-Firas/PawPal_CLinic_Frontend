@@ -41,6 +41,17 @@ export class NavManagerComponent implements OnInit {
     });
   }
 
+  navigateToProduits() {
+    this.router.navigate(['manager', 'produits']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
+  navigateToCommandes() {
+    this.router.navigate(['manager', 'commandes']).then(() => {
+       this.updateActiveClass();
+    });
+  }
   navigateToDashboard() {
     this.router.navigate(['manager', 'dashboard']).then(() => {
       this.updateActiveClass();

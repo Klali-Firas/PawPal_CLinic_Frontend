@@ -12,16 +12,25 @@
 
     <div class="form-group">
       <label for="animalId">Animal</label>
-      <select id="animalId" formControlName="animalId" class="form-control" required>
-        <option *ngFor="let animal of animaux" [value]="animal.id">
-          {{ animal.nom }} - {{ animal.race }}
-        </option>
-      </select>
-      <div *ngIf="rendezvousForm.get('animalId')?.invalid && rendezvousForm.get('animalId')?.touched"
-        class="text-danger">
-        Animal is required.
+      <div *ngIf="animaux.length > 0; else noAnimauxTemplate">
+        <select id="animalId" formControlName="animalId" class="form-control" required>
+          <option *ngFor="let animal of animaux" [value]="animal.id">
+            {{ animal.nom }} - {{ animal.race }}
+          </option>
+        </select>
+        <div *ngIf="rendezvousForm.get('animalId')?.invalid && rendezvousForm.get('animalId')?.touched" class="text-danger">
+          Animal is required.
+        </div>
       </div>
+      <ng-template #noAnimauxTemplate>
+        <div class="alert alert-warning" role="alert">
+          Vous n'avez pas encore d'animaux enregistrés.
+        </div>
+      </ng-template>
     </div>
+
+    
+    <button type="button" class="btn btn-secondary" (click)="openAddAnimalPopup()">Add Animal</button>
 
     <div class="form-group">
       <label for="dateRendezVous">Date of Rendez-vous</label>
@@ -46,4 +55,35 @@
 
     <button type="submit" class="btn btn-primary" [disabled]="rendezvousForm.invalid">Submit</button>
   </form>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': showAddAnimalPopup}" style="display: block;" *ngIf="showAddAnimalPopup">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Animal</h5>
+        <button type="button" class="close" (click)="closeAddAnimalPopup()">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="addAnimalForm" (ngSubmit)="onAddAnimal()">
+          <div class="form-group">
+            <label for="animalName">Name</label>
+            <input type="text" id="animalName" formControlName="nom" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="animalRace">Race</label>
+            <input type="text" id="animalRace" formControlName="race" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="animalAge">Age</label>
+            <input type="number" id="animalAge" formControlName="age" class="form-control" min="0">
+          </div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
