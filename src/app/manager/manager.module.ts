@@ -19,7 +19,7 @@ import { DashboardManagerComponent } from './dashboard-manager/dashboard-manager
     NavManagerComponent,
     AppointmentsManagerComponent,
     ProduitsComponent,
-    CommandesComponent
+    CommandesComponent,
     DashboardManagerComponent
   ],
   imports: [
