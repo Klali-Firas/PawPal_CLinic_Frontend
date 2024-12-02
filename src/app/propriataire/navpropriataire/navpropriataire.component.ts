@@ -43,6 +43,11 @@ export class NavpropriataireComponent implements OnInit {
 
   navigateToHistory() {
     this.router.navigate(['proprietaire', 'historique']).then(() => {
+       this.updateActiveClass();
+    });
+  }
+  navigateToMyAppointments() {
+    this.router.navigate(['proprietaire', 'mes-rendez-vous']).then(() => {
       this.updateActiveClass();
     });
   }
@@ -64,5 +69,6 @@ export class NavpropriataireComponent implements OnInit {
       this.updateActiveClass();
     });
   }
+
 
 }

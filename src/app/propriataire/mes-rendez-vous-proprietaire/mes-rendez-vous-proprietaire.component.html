@@ -1,0 +1,65 @@
+<div class="container mt-4">
+    <h2>Mes Rendez-vous</h2>
+    <table class="table table-striped">
+        <thead class="table-primary">
+            <tr>
+                <th scope="col">Animal</th>
+                <th scope="col">Date</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Motif</th>
+                <th scope="col">Remarques</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 5, currentPage: page }"
+                (click)="rv.statut === 'termine' ? openModal(rv) : null">
+                <td>{{ getAnimalName(rv.animalId) }}</td>
+                <td>{{ rv.dateRendezVous | date }}</td>
+                <td>{{ rv.statut }}</td>
+                <td>{{ services.get(rv.motif)?.nomService }}</td>
+                <td>{{ rv.remarques }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="avisModal" tabindex="-1" role="dialog" aria-labelledby="avisModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="avisModalLabel">Ajouter/Modifier Avis</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="avisForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="note">Note</label>
+                        <app-star-rating formControlName="note"></app-star-rating>
+                        <div *ngIf="avisForm.get('note')?.invalid && avisForm.get('note')?.touched" class="text-danger">
+                            La note est requise et doit être entre 1 et 5.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="commentaire">Commentaire</label>
+                        <textarea id="commentaire" formControlName="commentaire" class="form-control"
+                            required></textarea>
+                        <div *ngIf="avisForm.get('commentaire')?.invalid && avisForm.get('commentaire')?.touched"
+                            class="text-danger">
+                            Le commentaire est requis.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Confirmer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

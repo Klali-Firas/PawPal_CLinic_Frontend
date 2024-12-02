@@ -35,5 +35,10 @@ export class RendezvousService {
   getRendezVousByUserId(userId: number): Observable<RendezVous[]> {
     const url = `${this.apiUrl}/user/${userId}`;
     return this.http.get<RendezVous[]>(url);
+    }
+
+  exportRendezVousToCsv(): Observable<Blob> {
+    const url = `${this.apiUrl}/export/csv`;
+    return this.http.get(url, { responseType: 'blob' });
   }
 }

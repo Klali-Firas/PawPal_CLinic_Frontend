@@ -9,7 +9,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HistoriqueAniComponent } from './historique-ani/historique-ani.component';
 import { FormsModule } from '@angular/forms';
 import { MesCommandesComponent } from './mes-commandes/mes-commandes.component';
+import { MesRendezVousProprietaireComponent } from './mes-rendez-vous-proprietaire/mes-rendez-vous-proprietaire.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { SahredModule } from '../sahred/sahred.module';
+
 
 @NgModule({
   declarations: [
@@ -17,9 +20,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ShellpropriataireComponent,
     NavpropriataireComponent,
     HistoriqueAniComponent,
-    MesCommandesComponent
+    MesCommandesComponent,
+    MesRendezVousProprietaireComponent,
+
   ],
   imports: [
+    SahredModule,
     CommonModule,
     PropriataireRoutingModule,
     ReactiveFormsModule,
@@ -28,6 +34,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
   ],
   exports: [
     HistoriqueAniComponent
+
   ]
 })
 export class PropriataireModule { }

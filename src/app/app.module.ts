@@ -16,6 +16,7 @@ import { ShopComponent } from './shop/shop.component';
 import { ProductListComponent } from './shop/product-list/product-list.component';
 import { ProductDetailComponent } from './shop/produit-detail/produit-detail.component'; import { CommonModule } from '@angular/common';
 import { CartComponent } from './shop/cart/cart.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +34,7 @@ import { CartComponent } from './shop/cart/cart.component';
     HttpClientModule,
     ReactiveFormsModule,
     CommonModule,
+
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 3000, // Duration of the toast
@@ -46,6 +48,7 @@ import { CartComponent } from './shop/cart/cart.component';
       type: 'ball-scale-multiple',
     })
   ],
+
   providers: [],
   bootstrap: [AppComponent]
 })

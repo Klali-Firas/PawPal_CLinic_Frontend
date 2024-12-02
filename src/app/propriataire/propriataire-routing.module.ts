@@ -7,6 +7,8 @@ import { ShopComponent } from '../shop/shop.component';
 import { CartComponent } from '../shop/cart/cart.component';
 import { MesCommandesComponent } from './mes-commandes/mes-commandes.component';
 
+import { MesRendezVousProprietaireComponent } from './mes-rendez-vous-proprietaire/mes-rendez-vous-proprietaire.component';
+
 const routes: Routes = [
   {
     path: "", component: ShellpropriataireComponent, children: [
@@ -15,8 +17,9 @@ const routes: Routes = [
       { path: "historique", component: HistoriqueAniComponent },
       { path: "shop", component: ShopComponent },
       { path: "shop/cart", component: CartComponent },
-      { path: "mes-commandes", component: MesCommandesComponent }
+      { path: "mes-commandes", component: MesCommandesComponent },
 
+      { path: "mes-rendez-vous", component: MesRendezVousProprietaireComponent }
     ]
   }
 ];

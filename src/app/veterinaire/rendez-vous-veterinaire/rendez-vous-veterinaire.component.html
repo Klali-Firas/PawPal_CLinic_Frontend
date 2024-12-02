@@ -1,36 +1,39 @@
 <div class="container mt-4">
+    <h2 class="text-center mb-4">Mes Rendez-vous</h2>
     <div class="row">
-        <div class="col-12">
-            <table class="table table-striped">
-                <thead class="table-primary">
-                    <tr>
-                        <th scope="col">Propriétaire</th>
-                        <th scope="col">Animal</th>
-                        <th scope="col">Race</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Statut</th>
-                        <th scope="col">Motif</th>
-                        <th scope="col">Remarques</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 5, currentPage: page }"
-                        (click)="rv.statut === 'confirme' ?openModal(rv):null">
-                        <td>{{ proprietaires.get(rv.animalId)?.nom + " " + proprietaires.get(rv.animalId)?.prenom }}
-                        </td>
-                        <td>{{ animaux.get(rv.animalId)?.nom }}</td>
-                        <td>{{ animaux.get(rv.animalId)?.race }}</td>
-                        <td>{{ rv.dateRendezVous | date }}</td>
-                        <td>{{ rv.statut }}</td>
-                        <td>{{ services.get(rv.motif)?.nomService }}</td>
-                        <td>{{ rv.remarques }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-center">
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        <div *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 6, currentPage: page }"
+            class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body"
+                    (click)="(rv.statut === 'confirme' || rv.statut === 'termine') ? openModal(rv) : null">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="card-title">{{ proprietaires.get(rv.animalId)?.nom + ' ' +
+                                proprietaires.get(rv.animalId)?.prenom }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ animaux.get(rv.animalId)?.nom }} - {{
+                                animaux.get(rv.animalId)?.race }}</h6>
+                        </div>
+                        <div>
+                            <span class="badge badge-pill"
+                                [ngClass]="{'badge-primary': rv.statut === 'confirme', 'badge-success': rv.statut === 'termine'}">{{
+                                rv.statut }}</span>
+                        </div>
+                    </div>
+                    <p class="card-text"><strong>Date:</strong> {{ rv.dateRendezVous | date }}</p>
+                    <p class="card-text"><strong>Motif:</strong> {{ services.get(rv.motif)?.nomService }}</p>
+                    <p class="card-text"><strong>Remarques:</strong> {{ rv.remarques }}</p>
+                    <div *ngIf="avis.has(rv.id)">
+                        <hr>
+                        <h6 class="card-subtitle mb-2 text-muted">Avis</h6>
+                        <app-star-rating [rating]="avis.get(rv.id)?.note!" [readOnly]="true"></app-star-rating>
+                        <p class="card-text"><strong>Commentaire:</strong> {{ avis.get(rv.id)?.commentaire }}</p>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
 </div>
 

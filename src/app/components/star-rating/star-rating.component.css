@@ -1,0 +1,9 @@
+.star-rating {
+  display: flex;
+  cursor: pointer;
+}
+
+.star-rating .fa {
+  font-size: 2rem;
+  color: gold;
+}
