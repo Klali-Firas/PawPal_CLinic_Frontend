@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RendezVous } from '../interfaces/interfaces';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { RendezVous } from '../interfaces/interfaces';
 export class RendezvousService {
 
   constructor(private http: HttpClient) { }
-  apiUrl = 'http://localhost:4332/api/public/rendezvous';
+  apiUrl = `${environment.apiUrl}/api/public/rendezvous`;
 
   getAllRendezVous(): Observable<RendezVous[]> {
     return this.http.get<RendezVous[]>(this.apiUrl);
@@ -35,7 +36,7 @@ export class RendezvousService {
   getRendezVousByUserId(userId: number): Observable<RendezVous[]> {
     const url = `${this.apiUrl}/user/${userId}`;
     return this.http.get<RendezVous[]>(url);
-    }
+  }
 
   exportRendezVousToCsv(): Observable<Blob> {
     const url = `${this.apiUrl}/export/csv`;

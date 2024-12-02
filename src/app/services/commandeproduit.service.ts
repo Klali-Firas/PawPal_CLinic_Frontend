@@ -3,12 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CommandeProduits } from '../interfaces/interfaces';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommandeProduitService {
-  private apiUrl = 'http://localhost:4332/api/public/commande-produits';
+  private apiUrl = `${environment.apiUrl}/api/public/commande-produits`;
 
   constructor(private http: HttpClient) { }
 
