@@ -9,7 +9,7 @@
                 [ngClass]="{'user-message': message.isUser, 'ai-message': !message.isUser}">
                 <img *ngIf="message.isUser" [src]="photo" alt="User Photo" class="user-photo">
                 <img *ngIf="!message.isUser" src="assets/images/ai-assistant.svg" alt="AI Icon" class="ai-icon">
-                <p>{{ message.text }}</p>
+                <p [innerHTML]="message.text"></p>
             </div>
         </div>
         <div class="input-box">

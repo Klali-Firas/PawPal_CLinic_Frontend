@@ -1,5 +1,6 @@
 import { Component, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { AIServiceService } from '../../services/aiservice.service';
+import * as marked from 'marked';
 
 @Component({
   selector: 'app-proprietaire-chat',
@@ -31,16 +32,23 @@ export class ProprietaireChatComponent implements AfterViewChecked {
 
     this.aiService.generateAIResponseForProprietaire(sanitizedPrompt).subscribe({
       next: (response) => {
-        let aiResponse = response.choices[0].text;
+        let aiResponse = response.choices[0].message.content;
         const lastSentenceEnd = Math.max(
           aiResponse.lastIndexOf('.'),
           aiResponse.lastIndexOf('?'),
           aiResponse.lastIndexOf('!')
         );
-        if (lastSentenceEnd !== -1) {
-          aiResponse = aiResponse.substring(0, lastSentenceEnd + 1);
+        // if (lastSentenceEnd !== -1) {
+        //   aiResponse = aiResponse.substring(0, lastSentenceEnd + 1);
+        // }
+        const markdownResponse = marked.parse(aiResponse);
+        if (markdownResponse instanceof Promise) {
+          markdownResponse.then(resolvedResponse => {
+            this.messages.push({ text: resolvedResponse, isUser: false });
+          });
+        } else {
+          this.messages.push({ text: markdownResponse, isUser: false });
         }
-        this.messages.push({ text: aiResponse, isUser: false });
       },
       error: (err) => {
         console.error('Error:', err);
