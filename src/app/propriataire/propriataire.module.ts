@@ -12,6 +12,7 @@ import { MesCommandesComponent } from './mes-commandes/mes-commandes.component';
 import { MesRendezVousProprietaireComponent } from './mes-rendez-vous-proprietaire/mes-rendez-vous-proprietaire.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SahredModule } from '../sahred/sahred.module';
+import { ProprietaireChatComponent } from '../components/proprietaire-chat/proprietaire-chat.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { SahredModule } from '../sahred/sahred.module';
     HistoriqueAniComponent,
     MesCommandesComponent,
     MesRendezVousProprietaireComponent,
+    ProprietaireChatComponent
 
   ],
   imports: [

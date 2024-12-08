@@ -13,8 +13,12 @@ declare var $: any;
 })
 export class ProductListComponent implements OnInit {
   products: Produits[] = [];
+  paginatedProducts: Produits[] = [];
   selectedProduct: Produits | null = null;
   errorMessage: string = '';
+  currentPage: number = 1;
+  itemsPerPage: number = 6;
+  totalPages: number[] = [];
 
   constructor(
     private productService: ProduitService,
@@ -26,6 +30,8 @@ export class ProductListComponent implements OnInit {
     this.productService.getAllProduits().subscribe(
       (data) => {
         this.products = data;
+        this.calculateTotalPages();
+        this.updatePaginatedProducts();
         console.log(data);
       },
       (error) => {
@@ -33,6 +39,25 @@ export class ProductListComponent implements OnInit {
         console.error('There was an error!', error);
       }
     );
+  }
+
+  calculateTotalPages(): void {
+    const totalItems = this.products.length;
+    const totalPages = Math.ceil(totalItems / this.itemsPerPage);
+    this.totalPages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  updatePaginatedProducts(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedProducts = this.products.slice(startIndex, endIndex);
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages.length) {
+      this.currentPage = page;
+      this.updatePaginatedProducts();
+    }
   }
 
   openProductModal(productId: number): void {

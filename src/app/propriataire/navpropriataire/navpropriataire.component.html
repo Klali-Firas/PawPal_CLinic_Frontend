@@ -33,17 +33,31 @@
         </button>
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item" data-route="rendezvous"><a (click)="navigateToAppointments()" class="nav-link"
-                        role="button">Rendez Vous</a></li>
-              <li class="nav-item" data-route="mes-rendez-vous"><a (click)="navigateToMyAppointments()"
-                            class="nav-link">Mes Rendez Vous</a>
-                    </li>
-                <li class="nav-item" data-route="historique"><a (click)="navigateToHistory()"
-                        class="nav-link">Animals</a></li>
-                <li class="nav-item" data-route="shop"><a (click)="navigateToShop()" class="nav-link">Shop</a></li>
-                <li class="nav-item" data-route="mes-commandes"><a (click)="navigateToOrders()" class="nav-link">Mes
-                        Commandes</a>
-                    <!-- New Shop link -->
+                <li class="nav-item" data-route="rendezvous">
+                    <a (click)="navigateToAppointments()" class="nav-link" role="button">
+                        <span class="fa fa-calendar mr-1"></span> Rendez Vous
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-tasks mr-1"></span> Mes Activités
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" (click)="navigateToMyAppointments()">
+                            <span class="fa fa-calendar-check-o mr-1"></span> Mes Rendez Vous
+                        </a>
+                        <a class="dropdown-item" (click)="navigateToHistory()">
+                            <span class="fa fa-paw mr-1"></span> Animals
+                        </a>
+                        <a class="dropdown-item" (click)="navigateToShop()">
+                            <span class="fa fa-shopping-bag mr-1"></span> Shop
+                        </a>
+                        <a class="dropdown-item" (click)="navigateToOrders()">
+                            <span class="fa fa-list-alt mr-1"></span> Mes Commandes
+                        </a>
+                    </div>
+                </li>
                 <li class="nav-item" data-route="cart">
                     <a (click)="navigateToCart()" class="nav-link">
                         <span class="fa fa-shopping-cart"></span>
@@ -63,7 +77,6 @@
                     </a>
                 </li>
             </ul>
-
         </div>
     </div>
 </nav>

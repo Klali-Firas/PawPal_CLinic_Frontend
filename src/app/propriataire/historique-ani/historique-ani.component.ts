@@ -15,9 +15,16 @@ export class HistoriqueAniComponent implements OnInit {
   user: Utilisateurs = JSON.parse(localStorage.getItem('user') || '{}');
   animaux: Animaux[] = [];
   uniqueAnimaux: Animaux[] = [];
+  filteredAnimaux: Animaux[] = [];
   allRendezVous: RendezVous[] = [];
   veterinaires: Map<number, Utilisateurs> = new Map();
   selectedAnimal?: Animaux;
+  paginatedAnimaux: Animaux[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalPages: number = 0;
+  totalPagesArray: number[] = [];
+  searchTerm: string = '';
 
   constructor(
     private animauxService: AnimauxService,
@@ -30,6 +37,7 @@ export class HistoriqueAniComponent implements OnInit {
     await this.getAllRendezVous();
     await this.getAllVeterinaires();
     this.filterUniqueAnimaux();
+    this.updatePagination();
   }
 
   async getAnimaux(): Promise<void> {
@@ -67,14 +75,51 @@ export class HistoriqueAniComponent implements OnInit {
         return true;
       }
     });
+    this.filteredAnimaux = this.uniqueAnimaux;
   }
 
   getRendezVousForAnimal(animalId: number): RendezVous[] {
     return this.allRendezVous.filter(r => r.animalId === animalId);
   }
 
-
   selectAnimal(animal: Animaux): void {
     this.selectedAnimal = animal;
+  }
+
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredAnimaux.length / this.itemsPerPage);
+    this.totalPagesArray = Array(this.totalPages).fill(0).map((x, i) => i + 1);
+    this.paginate();
+  }
+
+  paginate() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedAnimaux = this.filteredAnimaux.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.paginate();
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.paginate();
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.paginate();
+    }
+  }
+
+  searchAnimals() {
+    this.filteredAnimaux = this.uniqueAnimaux.filter(animal => animal.nom.toLowerCase().includes(this.searchTerm.toLowerCase()));
+    this.currentPage = 1;
+    this.updatePagination();
   }
 }

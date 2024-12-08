@@ -1,37 +1,55 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-md-12">
-      <h2 class="text-center">Product List</h2>
+      <h2 class="text-center">Découvrez Nos Produits</h2>
       <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
         {{ errorMessage }}
       </div>
-      <div class="row">
-        <div class="col-md-4" *ngFor="let product of products">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let product of paginatedProducts">
           <div class="card mb-4">
             <img src="{{ product.image }}" class="card-img-top" alt="{{ product.nomProduit }}">
             <div class="card-body">
               <h5 class="card-title">{{ product.nomProduit }}</h5>
-              <p class="card-text">Price: {{ product.prix | currency }}</p>
+              <p class="card-text">Prix: {{ product.prix | currency }}</p>
               <div class="d-flex justify-content-between">
-                <button class="btn btn-primary btn-sm" (click)="openProductModal(product.id)">View Details</button>
-                <button class="btn btn-success btn-sm" (click)="addToCart(product)">Add to Cart</button>
+                <button class="btn btn-primary btn-sm" (click)="openProductModal(product.id)">Voir Détails</button>
+                <button class="btn btn-success btn-sm" (click)="addToCart(product)">Ajouter au Panier</button>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- Pagination Controls -->
+      <nav aria-label="Navigation de page">
+        <ul class="pagination justify-content-center mt-4">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="changePage(currentPage - 1)" aria-label="Précédent">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" *ngFor="let page of totalPages" [class.active]="page === currentPage">
+            <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages.length">
+            <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Suivant">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>
 
-<!-- Product Details Modal -->
+<!-- Modal Détails du Produit -->
 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="productModalLabel">{{ selectedProduct?.nomProduit }}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -43,15 +61,15 @@
                 <div class="carousel-item active">
                   <img [src]="selectedProduct.image" class="d-block w-100" alt="{{ selectedProduct.nomProduit }}">
                 </div>
-                <!-- Add more carousel items here if the product has multiple images -->
+                <!-- Ajouter plus d'éléments de carrousel ici si le produit a plusieurs images -->
               </div>
               <a class="carousel-control-prev" href="#carouselProductImages" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
+                <span class="sr-only">Précédent</span>
               </a>
               <a class="carousel-control-next" href="#carouselProductImages" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
+                <span class="sr-only">Suivant</span>
               </a>
             </div>
           </div>
@@ -59,10 +77,11 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ selectedProduct.nomProduit }}</h5>
-                <p class="card-text"><strong>Price:</strong> {{ selectedProduct.prix | currency }}</p>
+                <p class="card-text"><strong>Prix:</strong> {{ selectedProduct.prix | currency }}</p>
                 <p class="card-text"><strong>Description:</strong> {{ selectedProduct.description }}</p>
                 <p class="card-text"><strong>Stock:</strong> {{ selectedProduct.quantiteStock }}</p>
-                <button class="btn btn-success btn-block" (click)="addToCart(selectedProduct)">Add to Cart</button>
+                <button class="btn btn-success btn-block" (click)="addToCart(selectedProduct)">Ajouter au
+                  Panier</button>
               </div>
             </div>
           </div>
