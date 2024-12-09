@@ -8,10 +8,10 @@
                     (click)="(rv.statut === 'confirme' || rv.statut === 'termine') ? openModal(rv) : null">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
-                            <h5 class="card-title">{{ proprietaires.get(rv.animalId)?.nom + ' ' +
-                                proprietaires.get(rv.animalId)?.prenom }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ animaux.get(rv.animalId)?.nom }} - {{
-                                animaux.get(rv.animalId)?.race }}</h6>
+                            <h5 class="card-title"><i class="fas fa-user"></i> {{ proprietaires.get(rv.animalId)?.nom +
+                                ' ' + proprietaires.get(rv.animalId)?.prenom }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-paw"></i> {{
+                                animaux.get(rv.animalId)?.nom }} - {{ animaux.get(rv.animalId)?.race }}</h6>
                         </div>
                         <div>
                             <span class="badge badge-pill"
@@ -19,14 +19,18 @@
                                 rv.statut }}</span>
                         </div>
                     </div>
-                    <p class="card-text"><strong>Date:</strong> {{ rv.dateRendezVous | date }}</p>
-                    <p class="card-text"><strong>Motif:</strong> {{ services.get(rv.motif)?.nomService }}</p>
-                    <p class="card-text"><strong>Remarques:</strong> {{ rv.remarques }}</p>
+                    <p class="card-text"><i class="fas fa-calendar-alt"></i> <strong>Date:</strong> {{ rv.dateRendezVous
+                        | date }}</p>
+                    <p class="card-text"><i class="fas fa-stethoscope"></i> <strong>Motif:</strong> {{
+                        services.get(rv.motif)?.nomService }}</p>
+                    <p class="card-text"><i class="fas fa-comment"></i> <strong>Remarques:</strong> {{ rv.remarques }}
+                    </p>
                     <div *ngIf="avis.has(rv.id)">
                         <hr>
-                        <h6 class="card-subtitle mb-2 text-muted">Avis</h6>
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-star"></i> Avis</h6>
                         <app-star-rating [rating]="avis.get(rv.id)?.note!" [readOnly]="true"></app-star-rating>
-                        <p class="card-text"><strong>Commentaire:</strong> {{ avis.get(rv.id)?.commentaire }}</p>
+                        <p class="card-text"><i class="fas fa-comment-dots"></i> <strong>Commentaire:</strong> {{
+                            avis.get(rv.id)?.commentaire }}</p>
                     </div>
                 </div>
             </div>
@@ -43,7 +47,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editAnimalModalLabel">Modifier Animal</h5>
+                <h5 class="modal-title" id="editAnimalModalLabel"><i class="fas fa-edit"></i> Modifier Animal</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -51,15 +55,15 @@
             <div class="modal-body">
                 <form [formGroup]="editAnimalForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
-                        <label for="animalName">Nom de l'animal</label>
+                        <label for="animalName"><i class="fas fa-paw"></i> Nom de l'animal</label>
                         <input type="text" id="animalName" formControlName="nom" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="animalRace">Race de l'animal</label>
+                        <label for="animalRace"><i class="fas fa-dog"></i> Race de l'animal</label>
                         <input type="text" id="animalRace" formControlName="race" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="remarques">Remarques</label>
+                        <label for="remarques"><i class="fas fa-comment"></i> Remarques</label>
                         <textarea id="remarques" formControlName="remarques" class="form-control"></textarea>
                     </div>
                     <div class="modal-footer">

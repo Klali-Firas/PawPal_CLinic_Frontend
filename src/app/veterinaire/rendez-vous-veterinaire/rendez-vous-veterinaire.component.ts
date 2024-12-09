@@ -50,7 +50,7 @@ export class RendezVousVeterinaireComponent implements OnInit {
 
   getRendezVousByVeterinaireId() {
     this.rendezVousService.getRendezVousByVeterinaireId(this.user.id).subscribe(rendezVous => {
-      this.rendezVous = rendezVous;
+      this.rendezVous = rendezVous.sort((a, b) => new Date(b.creeLe!).getTime() - new Date(a.creeLe!).getTime());
       rendezVous.forEach(rendezVous => {
         this.getAnimalById(rendezVous.animalId);
         this.getAvisByRendezVousId(rendezVous.id);

@@ -60,3 +60,8 @@
 .pagination-controls button {
   margin: 0 10px;
 }
+
+.btn-primary i,
+.btn-success i {
+  margin-right: 5px;
+}
