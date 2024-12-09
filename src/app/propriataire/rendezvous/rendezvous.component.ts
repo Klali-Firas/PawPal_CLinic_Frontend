@@ -29,7 +29,7 @@ export class RendezvousComponent implements OnInit {
     this.rendezvousForm = this.fb.group({
       proprietaire: [{ value: `${this.user.nom} ${this.user.prenom}`, disabled: true }, Validators.required],
       animalId: [null, Validators.required],
-      dateRendezVous: [null, [Validators.required, this.noWeekendsValidator]],
+      dateRendezVous: [null, [Validators.required, this.noWeekendsValidator, this.workingHoursValidator]],
       motif: [null, Validators.required],
     });
 
@@ -143,6 +143,26 @@ export class RendezvousComponent implements OnInit {
     const day = date.getUTCDay();
     if (day === 0 || day === 6) {
       return { 'weekend': true };
+    }
+    return null;
+  }
+
+  workingHoursValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const date = new Date(control.value);
+    const day = date.getUTCDay();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    if (day >= 1 && day <= 4) { // Monday to Thursday
+      if ((hours < 8 || (hours === 8 && minutes < 0)) || ((hours >= 12 && minutes > 0) && (hours < 14 || (hours === 14 && minutes < 0))) || (hours == 13) || (hours >= 17)) {
+        return { 'workingHours': true };
+      }
+    } else if (day === 5) { // Friday
+      if ((hours < 8 || (hours === 8 && minutes < 0)) || (hours >= 14)) {
+        return { 'workingHours': true };
+      }
+    } else {
+      return { 'workingHours': true };
     }
     return null;
   }

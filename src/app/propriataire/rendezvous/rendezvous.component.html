@@ -40,6 +40,8 @@
         <div *ngIf="rendezvousForm.get('dateRendezVous')?.errors?.['required']">La date et l'heure sont requises.</div>
         <div *ngIf="rendezvousForm.get('dateRendezVous')?.errors?.['weekend']">Les week-ends ne sont pas autorisés.
         </div>
+        <div *ngIf="rendezvousForm.get('dateRendezVous')?.errors?.['workingHours']">Les heures de travail sont de 8h à
+          17h du lundi au jeudi (avec une pause de 12h30 à 14h) et de 8h à 14h le vendredi.</div>
       </div>
     </div>
 
