@@ -2,11 +2,13 @@
   <div class="row">
     <div class="col-md-12">
       <h2 class="text-center">Découvrez Nos Produits</h2>
+      <input type="text" class="form-control mb-4" placeholder="Rechercher un produit..." [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchTermChange()">
       <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
         {{ errorMessage }}
       </div>
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-        <div class="col" *ngFor="let product of paginatedProducts">
+      <div class="row  g-4">
+        <div class="col col-lg-3 col-md-4" *ngFor="let product of paginatedProducts">
           <div class="card mb-4">
             <img src="{{ product.image }}" class="card-img-top" alt="{{ product.nomProduit }}">
             <div class="card-body">

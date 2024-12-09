@@ -17,8 +17,9 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Produits | null = null;
   errorMessage: string = '';
   currentPage: number = 1;
-  itemsPerPage: number = 6;
+  itemsPerPage: number = 8;
   totalPages: number[] = [];
+  searchTerm: string = '';
 
   constructor(
     private productService: ProduitService,
@@ -39,6 +40,7 @@ export class ProductListComponent implements OnInit {
         console.error('There was an error!', error);
       }
     );
+    this.updatePaginatedProducts();
   }
 
   calculateTotalPages(): void {
@@ -48,9 +50,12 @@ export class ProductListComponent implements OnInit {
   }
 
   updatePaginatedProducts(): void {
+    const filteredProducts = this.products.filter(product =>
+      product.nomProduit.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedProducts = this.products.slice(startIndex, endIndex);
+    this.paginatedProducts = filteredProducts.slice(startIndex, endIndex);
   }
 
   changePage(page: number): void {
@@ -75,5 +80,10 @@ export class ProductListComponent implements OnInit {
   addToCart(product: Produits): void {
     this.cartService.addToCart(product);
     this.toastr.success(product.nomProduit + ' ajouté au panier');
+  }
+
+  onSearchTermChange(): void {
+    this.currentPage = 1;
+    this.updatePaginatedProducts();
   }
 }

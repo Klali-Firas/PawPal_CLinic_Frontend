@@ -43,6 +43,7 @@ export class HistoriqueAniComponent implements OnInit {
   async getAnimaux(): Promise<void> {
     try {
       this.animaux = await firstValueFrom(this.animauxService.getAnimauxByProprietaireId(this.user.id));
+      this.animaux.sort((a, b) => new Date(b.creeLe!).getTime() - new Date(a.creeLe!).getTime());
     } catch (error) {
       console.error('Error getting animaux', error);
     }

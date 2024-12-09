@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Services, Utilisateurs, RendezVous, Animaux } from 'src/app/interfaces/interfaces';
 import { AnimauxService } from 'src/app/services/animaux.service';
@@ -27,9 +27,9 @@ export class RendezvousComponent implements OnInit {
     private toaster: ToastrService
   ) {
     this.rendezvousForm = this.fb.group({
-      proprietaire: [{ value: this.user.nom + ' ' + this.user.prenom, disabled: true }, Validators.required],
+      proprietaire: [{ value: `${this.user.nom} ${this.user.prenom}`, disabled: true }, Validators.required],
       animalId: [null, Validators.required],
-      dateRendezVous: [null, Validators.required],
+      dateRendezVous: [null, [Validators.required, this.noWeekendsValidator]],
       motif: [null, Validators.required],
     });
 
@@ -43,27 +43,20 @@ export class RendezvousComponent implements OnInit {
   ngOnInit(): void {
     this.getAnimaux();
     this.getServices();
+    this.setMinDateForRendezVous();
   }
 
   getAnimaux(): void {
     this.animauxService.getAnimauxByProprietaireId(this.user.id).subscribe({
-      next: (response: Animaux[]) => {
-        this.animaux = response;
-      },
-      error: (error: any) => {
-        console.error('Error getting animaux', error);
-      }
+      next: (response: Animaux[]) => this.animaux = response,
+      error: (error: any) => console.error('Erreur lors de la récupération des animaux', error)
     });
   }
 
   getServices(): void {
     this.serviceService.getAllServices().subscribe({
-      next: (response: Services[]) => {
-        this.services = response;
-      },
-      error: (error: any) => {
-        console.error('Error getting services', error);
-      }
+      next: (response: Services[]) => this.services = response,
+      error: (error: any) => console.error('Erreur lors de la récupération des services', error)
     });
   }
 
@@ -78,7 +71,7 @@ export class RendezvousComponent implements OnInit {
   onAddAnimal(): void {
     if (this.addAnimalForm.valid) {
       const newAnimal: Animaux = {
-        id: 0, 
+        id: 0,
         proprietaireId: this.user.id,
         nom: this.addAnimalForm.value.nom,
         race: this.addAnimalForm.value.race,
@@ -90,12 +83,12 @@ export class RendezvousComponent implements OnInit {
       this.animauxService.createAnimaux(newAnimal).subscribe({
         next: (createdAnimal: Animaux) => {
           this.animaux.push(createdAnimal);
-          this.toaster.success('Animal added successfully');
+          this.toaster.success('Animal ajouté avec succès');
           this.closeAddAnimalPopup();
         },
         error: (error: any) => {
-          console.error('Error adding animal', error);
-          this.toaster.error('Error adding animal');
+          console.error('Erreur lors de l\'ajout de l\'animal', error);
+          this.toaster.error('Erreur lors de l\'ajout de l\'animal');
         }
       });
     }
@@ -106,14 +99,14 @@ export class RendezvousComponent implements OnInit {
       const formValue = this.rendezvousForm.value;
       const selectedService = this.services.find(service => service.id == formValue.motif);
       if (!selectedService) {
-        this.toaster.error('Service not found');
+        this.toaster.error('Service non trouvé');
         return;
       }
 
       const rendezVous: RendezVous = {
-        id: 0, 
+        id: 0,
         animalId: formValue.animalId,
-        veterinaireId: null, 
+        veterinaireId: null,
         dateRendezVous: new Date(formValue.dateRendezVous),
         statut: 'en_attente',
         motif: selectedService.id,
@@ -123,15 +116,34 @@ export class RendezvousComponent implements OnInit {
 
       this.rendezvousService.createRendezVous(rendezVous).subscribe({
         next: (createdRendezVous: RendezVous) => {
-          this.toaster.success('Rendez-vous created successfully');
+          this.toaster.success('Rendez-vous créé avec succès');
           this.rendezvousForm.reset();
-          this.rendezvousForm.patchValue({ proprietaire: this.user.nom + ' ' + this.user.prenom });
+          this.rendezvousForm.patchValue({ proprietaire: `${this.user.nom} ${this.user.prenom}` });
         },
         error: (error: any) => {
-          console.error('Error creating rendez-vous', error);
-          this.toaster.error('Error creating rendez-vous');
+          console.error('Erreur lors de la création du rendez-vous', error);
+          this.toaster.error('Erreur lors de la création du rendez-vous');
         }
       });
     }
+  }
+
+  setMinDateForRendezVous(): void {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 2);
+    tomorrow.setHours(0, 0, 0, 0);
+    const minDate = tomorrow.toISOString().slice(0, 16);
+    const dateInput = document.getElementById('dateRendezVous') as HTMLInputElement;
+    dateInput.min = minDate;
+  }
+
+  noWeekendsValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const date = new Date(control.value);
+    const day = date.getUTCDay();
+    if (day === 0 || day === 6) {
+      return { 'weekend': true };
+    }
+    return null;
   }
 }

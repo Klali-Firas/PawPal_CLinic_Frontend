@@ -8,12 +8,13 @@
                         <th scope="col">Date</th>
                         <th scope="col">Statut</th>
                         <th scope="col">Actions</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let commande of commandes | paginate: { itemsPerPage: 5, currentPage: page }"
                         (click)="openCommandeModal(commande)">
-                        <td>{{ commande.dateCommande | date }}</td>
+                        <td>{{ commande.dateCommande | date :'MMM dd, yyyy hh:mm' }}</td>
                         <td>{{ commande.statut }}</td>
                         <td>
                             <button class="btn btn-primary btn-sm" (click)="openCommandeModal(commande)">Voir
@@ -42,7 +43,7 @@
             </div>
             <div class="modal-body" *ngIf="selectedCommande">
                 <h5>Commande ID: {{ selectedCommande.id }}</h5>
-                <p><strong>Date:</strong> {{ selectedCommande.dateCommande | date }}</p>
+                <p><strong>Date:</strong> {{ selectedCommande.dateCommande | date : 'MMM dd, yyyy hh:mm'}}</p>
                 <p><strong>Statut:</strong> {{ selectedCommande.statut }}</p>
                 <hr>
                 <h5>Produits</h5>
@@ -51,7 +52,8 @@
                         <tr>
                             <th scope="col">Produit</th>
                             <th scope="col">Quantité</th>
-                            <th scope="col">Prix</th>
+                            <th scope="col">Prix Unitaire</th>
+                            <th scope="col">Prix Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,9 +61,11 @@
                             <td>{{ produits.get(cp.produitId)?.nomProduit }}</td>
                             <td>{{ cp.quantite }}</td>
                             <td>{{ produits.get(cp.produitId)?.prix | currency }}</td>
+                            <td>{{ ((produits.get(cp.produitId)?.prix!) * cp.quantite) | currency }}</td>
                         </tr>
                     </tbody>
                 </table>
+                <p><strong>Prix Total:</strong> {{ totalPrice | currency }}</p>
             </div>
         </div>
     </div>

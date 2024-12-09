@@ -24,7 +24,7 @@ export class AIServiceService {
         },
         { "role": "user", "content": "Keep your answers short and to the point." },
         { "role": "user", "content": "Keep your answers well formatted." },
-
+        { "role": "assistant", "content": "I'll keep my answers concise and properly formatted from now on." },
         { "role": "user", "content": prompt }
 
 

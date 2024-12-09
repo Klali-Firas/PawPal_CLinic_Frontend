@@ -49,7 +49,9 @@ export class MesRendezVousProprietaireComponent implements OnInit {
   getRendezVousByProprietaireId(): void {
     this.rendezvousService.getAllRendezVous().subscribe({
       next: (response: RendezVous[]) => {
-        this.rendezVous = response.filter(rv => rv.animalId in this.animaux.map(a => a.id));
+        this.rendezVous = response
+          .filter(rv => rv.animalId in this.animaux.map(a => a.id))
+          .sort((a, b) => new Date(b.creeLe!).getTime() - new Date(a.creeLe!).getTime());
       },
       error: (error: any) => {
         console.error('Error fetching rendez-vous', error);

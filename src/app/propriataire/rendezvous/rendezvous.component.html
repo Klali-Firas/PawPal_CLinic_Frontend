@@ -1,12 +1,12 @@
-<div class="container mt-5">
-  <h2>Rendez-vous Form</h2>
+<div class="container my-5">
+  <h2>Formulaire de Rendez-vous</h2>
   <form [formGroup]="rendezvousForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="proprietaire">Proprietaire</label>
+      <label for="proprietaire">Propriétaire</label>
       <input type="text" id="proprietaire" formControlName="proprietaire" class="form-control" required>
       <div *ngIf="rendezvousForm.get('proprietaire')?.invalid && rendezvousForm.get('proprietaire')?.touched"
         class="text-danger">
-        Proprietaire is required.
+        Le propriétaire est requis.
       </div>
     </div>
 
@@ -18,8 +18,9 @@
             {{ animal.nom }} - {{ animal.race }}
           </option>
         </select>
-        <div *ngIf="rendezvousForm.get('animalId')?.invalid && rendezvousForm.get('animalId')?.touched" class="text-danger">
-          Animal is required.
+        <div *ngIf="rendezvousForm.get('animalId')?.invalid && rendezvousForm.get('animalId')?.touched"
+          class="text-danger">
+          L'animal est requis.
         </div>
       </div>
       <ng-template #noAnimauxTemplate>
@@ -29,15 +30,16 @@
       </ng-template>
     </div>
 
-    
-    <button type="button" class="btn btn-secondary" (click)="openAddAnimalPopup()">Add Animal</button>
+    <button type="button" class="btn btn-secondary" (click)="openAddAnimalPopup()">Ajouter un Animal</button>
 
     <div class="form-group">
-      <label for="dateRendezVous">Date of Rendez-vous</label>
+      <label for="dateRendezVous">Date et Heure du Rendez-vous</label>
       <input type="datetime-local" id="dateRendezVous" formControlName="dateRendezVous" class="form-control" required>
       <div *ngIf="rendezvousForm.get('dateRendezVous')?.invalid && rendezvousForm.get('dateRendezVous')?.touched"
         class="text-danger">
-        Date is required.
+        <div *ngIf="rendezvousForm.get('dateRendezVous')?.errors?.['required']">La date et l'heure sont requises.</div>
+        <div *ngIf="rendezvousForm.get('dateRendezVous')?.errors?.['weekend']">Les week-ends ne sont pas autorisés.
+        </div>
       </div>
     </div>
 
@@ -49,20 +51,20 @@
         </option>
       </select>
       <div *ngIf="rendezvousForm.get('motif')?.invalid && rendezvousForm.get('motif')?.touched" class="text-danger">
-        Motif is required.
+        Le motif est requis.
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="rendezvousForm.invalid">Submit</button>
+    <button type="submit" class="btn btn-primary" [disabled]="rendezvousForm.invalid">Soumettre</button>
   </form>
 </div>
 
-
-<div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': showAddAnimalPopup}" style="display: block;" *ngIf="showAddAnimalPopup">
+<div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': showAddAnimalPopup}" style="display: block;"
+  *ngIf="showAddAnimalPopup">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Animal</h5>
+        <h5 class="modal-title">Ajouter un Animal</h5>
         <button type="button" class="close" (click)="closeAddAnimalPopup()">
           <span>&times;</span>
         </button>
@@ -70,7 +72,7 @@
       <div class="modal-body">
         <form [formGroup]="addAnimalForm" (ngSubmit)="onAddAnimal()">
           <div class="form-group">
-            <label for="animalName">Name</label>
+            <label for="animalName">Nom</label>
             <input type="text" id="animalName" formControlName="nom" class="form-control" required>
           </div>
           <div class="form-group">
@@ -78,10 +80,10 @@
             <input type="text" id="animalRace" formControlName="race" class="form-control">
           </div>
           <div class="form-group">
-            <label for="animalAge">Age</label>
+            <label for="animalAge">Âge</label>
             <input type="number" id="animalAge" formControlName="age" class="form-control" min="0">
           </div>
-          <button type="submit" class="btn btn-primary">Add</button>
+          <button type="submit" class="btn btn-primary">Ajouter</button>
         </form>
       </div>
     </div>
