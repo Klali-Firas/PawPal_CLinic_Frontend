@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartService } from '../../services/cart.Service'; // Adjust the import path as necessary
-import { AuthService } from '../../services/auth.service'; // Import AuthService
-import { CommandeProduitService } from '../../services/commandeproduit.service'; // Import CommandeProduitService
+import { CartService } from '../../services/cart.Service';
+import { AuthService } from '../../services/auth.service';
+import { CommandeProduitService } from '../../services/commandeproduit.service';
 import { CommandeProduits, Commandes, Produits, Utilisateurs } from 'src/app/interfaces/interfaces';
 import { CommandeService } from 'src/app/services/commande.service';
 import { ToastrService } from 'ngx-toastr';
@@ -22,8 +22,8 @@ export class CartComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private authService: AuthService, // Inject AuthService
-    private commandeProduitService: CommandeProduitService, // Inject CommandeProduitService
+    private authService: AuthService,
+    private commandeProduitService: CommandeProduitService,
     private router: Router,
     private commandeService: CommandeService,
     private toastr: ToastrService
@@ -33,7 +33,7 @@ export class CartComponent implements OnInit {
     this.cart = this.cartService.getCart();
     this.cart.forEach(product => {
       if (product.quantity === undefined) {
-        product.quantity = 1; // Initialize quantity if undefined
+        product.quantity = 1;
       }
     });
     this.calculateTotalPrice();
@@ -46,7 +46,7 @@ export class CartComponent implements OnInit {
   updateCart(): void {
     this.cart.forEach(product => {
       if (product.quantity! < 1) {
-        product.quantity = 1; // Ensure quantity is at least 1
+        product.quantity = 1;
       }
     });
     this.cartService.updateCart(this.cart);
@@ -65,9 +65,39 @@ export class CartComponent implements OnInit {
     this.totalPrice = 0;
   }
 
-  placeOrder(): void {
-    // Implement order placement logic here
-    console.log('Order placed!');
+  async confirmOrder(): Promise<void> {
+    if (this.authService.isLoggedIn()) {
+      const commande: Commandes = {
+        id: 0,
+        proprietaireId: this.user.id,
+        dateCommande: new Date(),
+        statut: 'en_attente'
+      };
+      var createdCommande: Commandes = await firstValueFrom(this.commandeService.createCommande(commande));
+      const order: CommandeProduits[] = this.cart.map(product => ({
+        id: 0,
+        produitId: product.id,
+        quantite: product.quantity!,
+        commandeId: createdCommande.id
+      }));
+
+      order.forEach(commandeProduit => {
+        this.commandeProduitService.createCommandeProduit(commandeProduit).subscribe({
+          next: () => {
+            console.log('Article de commande confirmé!');
+          },
+          error: (error) => {
+            console.error('Erreur lors de l\'enregistrement de l\'article de commande:', error);
+          }
+        });
+      });
+
+      this.clearCart();
+      $('#checkoutModal').modal('hide');
+      this.toastr.success('Commande passée avec succès!', 'Succès');
+    } else {
+      this.authService.login();
+    }
   }
 
   continueShopping(): void {
@@ -75,54 +105,9 @@ export class CartComponent implements OnInit {
     const activeRoute = currentUrl.split('/').includes('proprietaire') ? 'proprietaire' : 'client';
 
     if (activeRoute === 'proprietaire') {
-      this.router.navigate(['/proprietaire/shop']); // Navigate to the shop page
+      this.router.navigate(['/proprietaire/shop']);
     } else {
-      this.router.navigate(['/shop']); // Navigate to the product list page
-    }
-  }
-
-  async confirmOrder(): Promise<void> {
-    if (this.authService.isLoggedIn()) {
-
-      //cretae commande
-      const commande: Commandes =
-      {
-        id: 0, // Assuming the backend will generate the ID
-        proprietaireId: this.user.id,
-        dateCommande: new Date(),
-        statut: 'en_attente'
-      };
-      var createdCommande: Commandes = await firstValueFrom(this.commandeService.createCommande(commande));
-      // User is logged in, save the order to the database
-      const order: CommandeProduits[] = this.cart.map(product => ({
-        id: 0, // Assuming the backend will generate the ID
-        produitId: product.id,
-        quantite: product.quantity!,
-        commandeId: createdCommande.id
-
-      }));
-
-
-      // Send each CommandeProduit object individually
-      order.forEach(commandeProduit => {
-        this.commandeProduitService.createCommandeProduit(commandeProduit).subscribe({
-          next: () => {
-            console.log('Order item confirmed!');
-          },
-          error: (error) => {
-            console.error('Error saving order item:', error);
-          }
-        });
-      });
-
-      this.clearCart();
-      $('#checkoutModal').modal('hide'); // Close the modal
-
-      // Show a success message
-      this.toastr.success('Commande passée avec succès!', 'Succès');
-    } else {
-      // User is not logged in, navigate to the login page
-      this.authService.login();
+      this.router.navigate(['/shop']);
     }
   }
 }

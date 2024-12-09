@@ -33,10 +33,16 @@
         </button>
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item" data-route="rendez-vous"><a (click)="onRendezVous()" class="nav-link"
-                        role="button">Rendez-vous</a></li>
-                <li class="nav-item" data-route="ListAnimauxVet"><a (click)="onListAnimauxVet()" class="nav-link">Liste
-                        des Animaux</a></li>
+                <li class="nav-item" data-route="rendez-vous">
+                    <a (click)="onRendezVous()" class="nav-link" role="button">
+                        <span class="fa fa-calendar mr-1"></span> Rendez-vous
+                    </a>
+                </li>
+                <li class="nav-item" data-route="ListAnimauxVet">
+                    <a (click)="onListAnimauxVet()" class="nav-link">
+                        <span class="fa fa-list mr-1"></span> Liste des Animaux
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center"
                         style="padding-bottom: calc( 36.8px - ( 30px - 25.2px ) );" href="#" id="navbarDropdown"

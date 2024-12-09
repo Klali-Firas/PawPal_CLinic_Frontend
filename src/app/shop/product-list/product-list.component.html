@@ -13,7 +13,7 @@
             <img src="{{ product.image }}" class="card-img-top" alt="{{ product.nomProduit }}">
             <div class="card-body">
               <h5 class="card-title">{{ product.nomProduit }}</h5>
-              <p class="card-text">Prix: {{ product.prix | currency }}</p>
+              <p class="card-text">Prix: {{ product.prix }} TND</p>
               <div class="d-flex justify-content-between">
                 <button class="btn btn-primary btn-sm" (click)="openProductModal(product.id)">Voir Détails</button>
                 <button class="btn btn-success btn-sm" (click)="addToCart(product)">Ajouter au Panier</button>
@@ -79,7 +79,7 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ selectedProduct.nomProduit }}</h5>
-                <p class="card-text"><strong>Prix:</strong> {{ selectedProduct.prix | currency }}</p>
+                <p class="card-text"><strong>Prix:</strong> {{ selectedProduct.prix }} TND</p>
                 <p class="card-text"><strong>Description:</strong> {{ selectedProduct.description }}</p>
                 <p class="card-text"><strong>Stock:</strong> {{ selectedProduct.quantiteStock }}</p>
                 <button class="btn btn-success btn-block" (click)="addToCart(selectedProduct)">Ajouter au

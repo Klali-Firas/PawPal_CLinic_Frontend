@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Animaux, RendezVous, Utilisateurs } from 'src/app/interfaces/interfaces';
+import { Router } from '@angular/router';
 
 import { firstValueFrom } from 'rxjs';
 import { AnimauxService } from 'src/app/services/animaux.service';
@@ -22,12 +23,16 @@ export class ListAnimauxVetComponent implements OnInit {
   allRendezVous: RendezVous[] = [];
   veterinaires: Map<number, Utilisateurs> = new Map();
 
+  currentPage: number = 1;
+  itemsPerPage: number = 7;
+
   constructor(
     private fb: FormBuilder,
     private animauxService: AnimauxService,
     private userService: UtilisateurService,
     private rendezvousService: RendezvousService,
-    private utilisateurService: UtilisateurService
+    private utilisateurService: UtilisateurService,
+    private router: Router
   ) {
     this.editAnimalForm = this.fb.group({
       nom: ['', Validators.required],
@@ -36,16 +41,15 @@ export class ListAnimauxVetComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.animauxService.getAllAnimaux().subscribe({
       next: (data) => {
-        this.animauxList = data;
+        this.animauxList = data.sort((a, b) => new Date(b.creeLe!).getTime() - new Date(a.creeLe!).getTime());
         this.animauxList.forEach(animal => {
           this.getProprietaireByAnimalId(animal.id);
         });
       },
-      error: (error) => console.error('There was an error!', error)
+      error: (error) => console.error('Erreur lors de la récupération des animaux!', error)
     });
 
     this.getAllRendezVous();
@@ -55,10 +59,9 @@ export class ListAnimauxVetComponent implements OnInit {
   getProprietaireByAnimalId(id: number): void {
     this.userService.getProprietaireByAnimalId(id).subscribe({
       next: (data) => this.proprietaires.set(id, data),
-      error: (error) => console.error('There was an error!', error)
+      error: (error) => console.error('Erreur lors de la récupération du propriétaire!', error)
     });
   }
-
 
   openEditAnimalPopup(animal: Animaux): void {
     this.selectedAnimal = animal;
@@ -91,7 +94,7 @@ export class ListAnimauxVetComponent implements OnInit {
           this.closeEditAnimalPopup();
         },
         error: (error: any) => {
-          console.error('Error updating animal', error);
+          console.error('Erreur lors de la mise à jour de l\'animal', error);
         }
       });
     }
@@ -100,27 +103,51 @@ export class ListAnimauxVetComponent implements OnInit {
   nonNegativeValidator(control: AbstractControl): ValidationErrors | null {
     return control.value !== null && control.value < 0 ? { nonNegative: true } : null;
   }
+
   voirHistorique(animal: Animaux): void {
     this.selectedAnimal = animal;
   }
+
   async getAllRendezVous(): Promise<void> {
     try {
       this.allRendezVous = await firstValueFrom(this.rendezvousService.getAllRendezVous());
     } catch (error) {
-      console.error('Error getting rendez-vous', error);
+      console.error('Erreur lors de la récupération des rendez-vous', error);
     }
   }
+
   async getAllVeterinaires(): Promise<void> {
     try {
       const veterinaires = await firstValueFrom(this.utilisateurService.getAllVeterinaires());
       veterinaires.forEach(vet => this.veterinaires.set(vet.id, vet));
     } catch (error) {
-      console.error('Error getting veterinaires', error);
+      console.error('Erreur lors de la récupération des vétérinaires', error);
     }
   }
 
   getRendezVousForAnimal(animalId: number): RendezVous[] {
     return this.allRendezVous.filter(r => r.animalId === animalId);
+  }
 
+  get paginatedAnimauxList(): Animaux[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.animauxList.slice(startIndex, endIndex);
+  }
+
+  nextPage(): void {
+    if ((this.currentPage * this.itemsPerPage) < this.animauxList.length) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  navigateToAjoutAnimal(): void {
+    this.router.navigate(['/veterinaire/ajoutAnimal']);
   }
 }

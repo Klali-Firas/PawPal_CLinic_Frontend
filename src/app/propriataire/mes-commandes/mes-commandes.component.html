@@ -60,12 +60,12 @@
                         <tr *ngFor="let cp of commandeProduits">
                             <td>{{ produits.get(cp.produitId)?.nomProduit }}</td>
                             <td>{{ cp.quantite }}</td>
-                            <td>{{ produits.get(cp.produitId)?.prix | currency }}</td>
-                            <td>{{ ((produits.get(cp.produitId)?.prix!) * cp.quantite) | currency }}</td>
+                            <td>{{ produits.get(cp.produitId)?.prix }} TND</td>
+                            <td>{{ (produits.get(cp.produitId)?.prix! * cp.quantite) }} TND</td>
                         </tr>
                     </tbody>
                 </table>
-                <p><strong>Prix Total:</strong> {{ totalPrice | currency }}</p>
+                <p><strong>Prix Total:</strong> {{ totalPrice }} TND</p>
             </div>
         </div>
     </div>

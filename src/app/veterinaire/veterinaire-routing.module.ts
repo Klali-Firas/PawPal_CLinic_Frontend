@@ -8,6 +8,7 @@ import { AjoutAnimalComponent } from './ajout-animal/ajout-animal.component';
 const routes: Routes = [
   {
     path: '', component: ShellVeterinaireComponent, children: [
+      { path: '', redirectTo: 'rendez-vous', pathMatch: 'full' },
       { path: 'rendez-vous', component: RendezVousVeterinaireComponent },
       { path: 'ListAnimauxVet', component: ListAnimauxVetComponent },
       { path: 'ajoutAnimal', component: AjoutAnimalComponent },

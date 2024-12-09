@@ -65,7 +65,7 @@
                         <tr *ngFor="let cp of commandeProduits">
                             <td>{{ produits.get(cp.produitId)?.nomProduit }}</td>
                             <td>{{ cp.quantite }}</td>
-                            <td>{{ produits.get(cp.produitId)?.prix | currency }}</td>
+                            <td>{{ produits.get(cp.produitId)?.prix }} TND</td>
                         </tr>
                     </tbody>
                 </table>

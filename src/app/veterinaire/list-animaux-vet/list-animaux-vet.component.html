@@ -1,37 +1,43 @@
 <div class="container mt-5">
-  <h2>List of Animals</h2>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Liste des Animaux</h2>
+    <button (click)="navigateToAjoutAnimal()" class="btn btn-primary">Ajouter un Animal</button>
+  </div>
   <table class="table table-striped">
     <thead>
       <tr>
         <th scope="col">Nom</th>
         <th scope="col">Race</th>
-        <th scope="col">Age</th>
-        <th scope="col">Historique médical</th>
+        <th scope="col">Âge</th>
         <th scope="col">Propriétaire</th>
         <th scope="col">Date de création</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let animal of animauxList">
+      <tr *ngFor="let animal of paginatedAnimauxList">
         <td>{{ animal.nom }}</td>
         <td>{{ animal.race }}</td>
-        <td>{{ animal.age}}</td>
-        <td>{{ animal.historiqueMedical}}</td>
+        <td>{{ animal.age }} mois</td>
         <td>{{ proprietaires.get(animal.id)?.nom +' '+proprietaires.get(animal.id)?.prenom }}</td>
         <td>{{ animal.creeLe | date}}</td>
         <td>
-
-          <button (click)="openEditAnimalPopup(animal)" class="btn-modifier btn-sm me-2">Modifier</button>
-          <button class="btn-supprimer btn-sm">Archiver</button>
-          <button class="btn-historique btn-sm" (click)="voirHistorique(animal)" data-toggle="modal"
-            data-target="#historiqueModal">Voir Historique</button>
+          <i (click)="openEditAnimalPopup(animal)" class="fas fa-edit text-success me-2" title="Modifier"></i>
+          <!-- <i class="fas fa-archive text-danger me-2" title="Archiver"></i> -->
+          <i class="fas fa-history text-primary" (click)="voirHistorique(animal)" data-toggle="modal"
+            data-target="#historiqueModal" title="Voir Historique"></i>
         </td>
       </tr>
     </tbody>
   </table>
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPage === 1" class="btn btn-primary">
+      << </button>
+        <span>Page {{ currentPage }}</span>
+        <button (click)="nextPage()" [disabled]="(currentPage * itemsPerPage) >= animauxList.length"
+          class="btn btn-primary">>></button>
+  </div>
 </div>
-
 
 <!-- Edit Animal Popup -->
 <div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': showEditAnimalPopup}" style="display: block;"
@@ -39,7 +45,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Edit Animal</h5>
+        <h5 class="modal-title">Modifier Animal</h5>
         <button type="button" class="close" (click)="closeEditAnimalPopup()">
           <span>&times;</span>
         </button>
@@ -47,7 +53,7 @@
       <div class="modal-body">
         <form [formGroup]="editAnimalForm" (ngSubmit)="onEditAnimal()">
           <div class="form-group">
-            <label for="animalName">Name</label>
+            <label for="animalName">Nom</label>
             <input type="text" id="animalName" formControlName="nom" class="form-control" required>
           </div>
           <div class="form-group">
@@ -55,13 +61,13 @@
             <input type="text" id="animalRace" formControlName="race" class="form-control">
           </div>
           <div class="form-group">
-            <label for="animalAge">Age</label>
+            <label for="animalAge">Âge</label>
             <input type="number" id="animalAge" formControlName="age" class="form-control" min="0">
             <div *ngIf="editAnimalForm.get('age')?.invalid && editAnimalForm.get('age')?.touched" class="text-danger">
-              Age cannot be negative.
+              L'âge ne peut pas être négatif.
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
         </form>
       </div>
     </div>
@@ -83,7 +89,7 @@
       <div class="modal-body">
         <div *ngIf="selectedAnimal">
           <p class="mb-1"><strong>Race:</strong> {{ selectedAnimal.race }}</p>
-          <p class="mb-1"><strong>Age:</strong> {{ selectedAnimal.age }}</p>
+          <p class="mb-1"><strong>Âge:</strong> {{ selectedAnimal.age }} mois</p>
           <p class="mb-1"><strong>Historique Médical:</strong> {{ selectedAnimal.historiqueMedical }}</p>
           <div *ngIf="getRendezVousForAnimal(selectedAnimal.id).length > 0; else noRendezVous">
             <h4 class="mt-3">Rendez-vous:</h4>
@@ -95,7 +101,7 @@
                   <th>Motif</th>
                   <th>Créé Le</th>
                   <th>Remarques</th>
-                  <th>Veterinaire</th>
+                  <th>Vétérinaire</th>
                 </tr>
               </thead>
               <tbody>
@@ -105,19 +111,19 @@
                   <td>{{ rv.motif }}</td>
                   <td>{{ rv.creeLe | date:'short' }}</td>
                   <td>{{ rv.remarques }}</td>
-                  <td>{{ veterinaires.get(rv.veterinaireId!)?.nom + " " + veterinaires.get(rv.veterinaireId!)?.prenom
-                    }}</td>
+                  <td>{{ veterinaires.get(rv.veterinaireId!)?.nom + " " + veterinaires.get(rv.veterinaireId!)?.prenom }}
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <ng-template #noRendezVous>
-            <p class="text-muted">No appointments found for this animal.</p>
+            <p class="text-muted">Aucun rendez-vous trouvé pour cet animal.</p>
           </ng-template>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
       </div>
     </div>
   </div>
