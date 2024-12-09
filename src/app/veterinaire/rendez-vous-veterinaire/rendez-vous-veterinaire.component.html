@@ -63,12 +63,19 @@
                         <input type="text" id="animalRace" formControlName="race" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="remarques"><i class="fas fa-comment"></i> Remarques</label>
-                        <textarea id="remarques" formControlName="remarques" class="form-control"></textarea>
+                        <div class="d-flex align-items-center">
+                            <label for="remarques"><i class="fas fa-comment"></i> Remarques</label>
+                            <img src="assets/images/ai-stars.svg" alt="AI Star" [class.flicker]="isGenerating"
+                                style="width: 20px; height: 20px; margin-left: auto; margin-bottom: 8px;"
+                                (click)="onAIStarsClick()" data-toggle="tooltip"
+                                title="Générer des remarques améliorées">
+                        </div>
+                        <textarea id="remarques" formControlName="remarques" class="form-control" rows="3"></textarea>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-primary">Confirmer</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="isGenerating">Confirmer</button>
                     </div>
                 </form>
             </div>

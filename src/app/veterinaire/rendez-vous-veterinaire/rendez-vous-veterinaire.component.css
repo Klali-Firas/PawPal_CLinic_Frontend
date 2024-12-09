@@ -38,3 +38,35 @@
 i {
   margin-right: 5px;
 }
+
+@keyframes flicker {
+  0%,
+  100% {
+    filter: grayscale(100%);
+  }
+  50% {
+    filter: none;
+  }
+}
+
+img[src*="ai-stars.svg"] {
+  filter: grayscale(100%);
+  transition: filter 0.2s;
+}
+
+img[src*="ai-stars.svg"]:hover {
+  filter: none;
+  cursor: pointer;
+}
+
+img.flicker {
+  animation: flicker 1500ms infinite;
+}
+
+.tooltip {
+  opacity: 0.5 !important;
+}
+
+.tooltip.show {
+  transition-delay: 1s !important;
+}
