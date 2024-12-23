@@ -35,15 +35,30 @@
             </button>
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item " data-route="dashboard"><a (click)="navigateToDashboard()"
-                            class="nav-link">Dashboard</a></li>
-                    <li class="nav-item" data-route="rendezvous"><a (click)="navigateToAppointments()" class="nav-link"
-                            role="button">Rendez
-                            Vous</a></li>
-                    <li class="nav-item" data-route="commandes"><a (click)="navigateToCommandes()"
-                            class="nav-link">Commandes</a>
-                    <li class="nav-item" data-route="produits"><a (click)="navigateToProduits()"
-                            class="nav-link">produits</a></li>
+                    <li class="nav-item" data-route="dashboard">
+                        <a (click)="navigateToDashboard()" class="nav-link">
+                            <span class="fa fa-tachometer-alt mr-1"></span> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item" data-route="rendezvous">
+                        <a (click)="navigateToAppointments()" class="nav-link">
+                            <span class="fa fa-calendar-check mr-1"></span> Rendez Vous
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-box mr-1"></span> Boutique
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="productsDropdown">
+                            <a class="dropdown-item" (click)="navigateToProduits()">
+                                <span class="fa fa-box-open mr-1"></span> Produits
+                            </a>
+                            <a class="dropdown-item" (click)="navigateToCommandes()">
+                                <span class="fa fa-shopping-cart mr-1"></span> Commandes
+                            </a>
+                        </div>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center"
                             style="padding-bottom: calc( 36.8px - ( 30px - 25.2px ) );" href="#" id="navbarDropdown"
@@ -58,7 +73,6 @@
                             </div>
                         </a>
                     </li>
-
                 </ul>
             </div>
         </div>

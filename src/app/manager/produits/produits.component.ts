@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProduitService } from 'src/app/services/produit.service';
 import { Produits } from 'src/app/interfaces/interfaces';
 import { ToastrService } from 'ngx-toastr';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 declare var $: any;
 
@@ -16,6 +17,7 @@ export class ProduitsComponent implements OnInit {
   selectedProduit: Produits | null = null;
   produitForm: FormGroup;
   isEditMode: boolean = false;
+  page: number = 1;
 
   constructor(
     private produitService: ProduitService,
@@ -94,18 +96,5 @@ export class ProduitsComponent implements OnInit {
     }
   }
 
-  deleteProduit(produitId: number): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-      this.produitService.deleteProduit(produitId).subscribe({
-        next: () => {
-          this.toastr.success('Produit supprimé avec succès', 'Succès');
-          this.fetchProduits();
-        },
-        error: (error: any) => {
-          console.error('Erreur lors de la suppression du produit', error);
-          this.toastr.error('Erreur lors de la suppression du produit', 'Erreur');
-        }
-      });
-    }
-  }
+
 }

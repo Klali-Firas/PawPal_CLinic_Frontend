@@ -52,8 +52,8 @@
                       <td>{{ rv.motif }}</td>
                       <td>{{ rv.creeLe | date:'short' }}</td>
                       <td>{{ rv.remarques }}</td>
-                      <td>{{ veterinaires.get(rv.veterinaireId!)?.nom + " " +
-                        veterinaires.get(rv.veterinaireId!)?.prenom }}</td>
+                      <td>{{ rv.veterinaireId ? (veterinaires.get(rv.veterinaireId)?.nom + " " +
+                        veterinaires.get(rv.veterinaireId)?.prenom) : 'N/A' }}</td>
                     </tr>
                   </tbody>
                 </table>

@@ -9,6 +9,7 @@ import { DashboardManagerComponent } from './dashboard-manager/dashboard-manager
 const routes: Routes = [
   {
     path: '', component: ShellManagerComponent, children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'rendezvous', component: AppointmentsManagerComponent },
       { path: 'produits', component: ProduitsComponent },
       { path: 'commandes', component: CommandesComponent },

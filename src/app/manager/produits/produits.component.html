@@ -1,30 +1,39 @@
 <div class="container mt-4">
-    <h2>Gestion des Produits</h2>
+    <h2><i class="fa fa-box"></i> Gestion des Produits</h2>
     <div class="row">
         <div class="col-12">
             <table class="table table-striped">
                 <thead class="table-primary">
                     <tr>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Prix</th>
-                        <th scope="col">Quantité en Stock</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col" style="width: 20%;"><i class="fa fa-tag"></i> Nom</th>
+                        <th scope="col" style="width: 20%;"><i class="fa fa-info-circle"></i>
+                            Description</th>
+                        <th scope="col" style="width: 20%;"><i class="fa fa-money-bill"></i> Prix
+                        </th>
+                        <th scope="col" style="width: 20%;"><i class="fa fa-boxes"></i> Quantité en
+                            Stock</th>
+                        <th scope="col" style="width: 20%;"><i class="fa fa-cogs"></i> Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let produit of produits">
+                    <tr *ngFor="let produit of produits | paginate: { itemsPerPage: 5, currentPage: page }">
                         <td>{{ produit.nomProduit }}</td>
                         <td>{{ produit.description }}</td>
-                        <td>{{ produit.prix | currency }}</td>
+                        <td>{{ produit.prix }} TND</td>
                         <td>{{ produit.quantiteStock }}</td>
                         <td>
-                            <button class="btn btn-primary btn-sm" (click)="openProduitModal(produit)">Modifier</button>
-                            <button class="btn btn-danger btn-sm" (click)="deleteProduit(produit.id)">Archiver</button>
+                            <button class="btn btn-primary btn-sm" (click)="openProduitModal(produit)">
+                                <i class="fa fa-edit"></i>
+                            </button>
+
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                <pagination-controls (pageChange)="page = $event" previousLabel="Précédent"
+                    nextLabel="Suivant"></pagination-controls>
+            </div>
         </div>
     </div>
     <button class="btn btn-success btn-lg rounded-circle" style="position: fixed; bottom: 20px; right: 20px;"
@@ -39,7 +48,9 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="produitModalLabel">{{ isEditMode ? 'Modifier Produit' : 'Ajouter Produit' }}
+                <h5 class="modal-title" id="produitModalLabel">
+                    <i class="fa" [ngClass]="isEditMode ? 'fa-edit' : 'fa-plus'"></i>
+                    {{ isEditMode ? 'Modifier Produit' : 'Ajouter Produit' }}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -93,9 +104,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Mettre à jour' : 'Ajouter'
-                            }}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fa fa-times"></i> Annuler
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa" [ngClass]="isEditMode ? 'fa-save' : 'fa-plus'"></i>
+                            {{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}
+                        </button>
                     </div>
                 </form>
             </div>

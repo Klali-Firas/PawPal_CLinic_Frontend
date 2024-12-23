@@ -49,7 +49,7 @@ export class NavManagerComponent implements OnInit {
 
   navigateToCommandes() {
     this.router.navigate(['manager', 'commandes']).then(() => {
-       this.updateActiveClass();
+      this.updateActiveClass();
     });
   }
   navigateToDashboard() {
@@ -57,5 +57,7 @@ export class NavManagerComponent implements OnInit {
       this.updateActiveClass();
     });
   }
+
+
 
 }
