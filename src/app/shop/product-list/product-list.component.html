@@ -13,10 +13,13 @@
             <img src="{{ product.image }}" class="card-img-top" alt="{{ product.nomProduit }}">
             <div class="card-body">
               <h5 class="card-title">{{ product.nomProduit }}</h5>
-              <p class="card-text">Prix: {{ product.prix }} TND</p>
+              <p class="card-text">Prix: {{ product.prix.toFixed(2) }} TND</p>
               <div class="d-flex justify-content-between">
                 <button class="btn btn-primary btn-sm" (click)="openProductModal(product.id)">Voir Détails</button>
-                <button class="btn btn-success btn-sm" (click)="addToCart(product)">Ajouter au Panier</button>
+                <button class="btn btn-success btn-sm" (click)="addToCart(product)"
+                  [disabled]="product.quantiteStock === 0">
+                  {{ product.quantiteStock === 0 ? 'Rupture de stock' : 'Ajouter au Panier' }}
+                </button>
               </div>
             </div>
           </div>
@@ -79,11 +82,14 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ selectedProduct.nomProduit }}</h5>
-                <p class="card-text"><strong>Prix:</strong> {{ selectedProduct.prix }} TND</p>
+                <p class="card-text"><strong>Prix:</strong> {{ selectedProduct.prix.toFixed(2) }} TND</p>
                 <p class="card-text"><strong>Description:</strong> {{ selectedProduct.description }}</p>
-                <p class="card-text"><strong>Stock:</strong> {{ selectedProduct.quantiteStock }}</p>
-                <button class="btn btn-success btn-block" (click)="addToCart(selectedProduct)">Ajouter au
-                  Panier</button>
+                <p class="card-text"><strong>Disponibilité:</strong> {{ selectedProduct.quantiteStock > 0 ? 'Disponible'
+                  : 'Indisponible' }}</p>
+                <button class="btn btn-success btn-block" (click)="addToCart(selectedProduct)"
+                  [disabled]="selectedProduct.quantiteStock === 0">
+                  {{ selectedProduct.quantiteStock === 0 ? 'Rupture de stock' : 'Ajouter au Panier' }}
+                </button>
               </div>
             </div>
           </div>

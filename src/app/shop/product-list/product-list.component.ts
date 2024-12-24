@@ -55,7 +55,10 @@ export class ProductListComponent implements OnInit {
     );
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedProducts = filteredProducts.slice(startIndex, endIndex);
+    this.paginatedProducts = filteredProducts.slice(startIndex, endIndex).map(product => ({
+      ...product,
+      prix: parseFloat(product.prix.toFixed(2))
+    }));
   }
 
   changePage(page: number): void {

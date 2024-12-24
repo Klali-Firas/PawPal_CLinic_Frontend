@@ -41,7 +41,7 @@ export class ProduitsComponent implements OnInit {
   fetchProduits(): void {
     this.produitService.getAllProduits().subscribe({
       next: (response: Produits[]) => {
-        this.produits = response;
+        this.produits = response.sort((a, b) => new Date(b.creeLe!).getTime() - new Date(a.creeLe!).getTime());
       },
       error: (error: any) => {
         console.error('Erreur lors de la récupération des produits', error);

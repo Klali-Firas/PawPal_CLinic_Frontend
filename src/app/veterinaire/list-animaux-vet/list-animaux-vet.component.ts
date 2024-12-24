@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { AnimauxService } from 'src/app/services/animaux.service';
 import { RendezvousService } from 'src/app/services/rendezvous.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list-animaux-vet',
@@ -27,6 +28,7 @@ export class ListAnimauxVetComponent implements OnInit {
   itemsPerPage: number = 7;
 
   constructor(
+    private toastr: ToastrService,
     private fb: FormBuilder,
     private animauxService: AnimauxService,
     private userService: UtilisateurService,
@@ -49,7 +51,10 @@ export class ListAnimauxVetComponent implements OnInit {
           this.getProprietaireByAnimalId(animal.id);
         });
       },
-      error: (error) => console.error('Erreur lors de la récupération des animaux!', error)
+      error: (error) => {
+        console.error('Erreur lors de la récupération des animaux!', error);
+        this.toastr.error('Échec du chargement des animaux!');
+      }
     });
 
     this.getAllRendezVous();
@@ -92,9 +97,11 @@ export class ListAnimauxVetComponent implements OnInit {
             this.animauxList[index] = response;
           }
           this.closeEditAnimalPopup();
+          this.toastr.success('Animal mis à jour avec succès!');
         },
         error: (error: any) => {
           console.error('Erreur lors de la mise à jour de l\'animal', error);
+          this.toastr.error('Échec de la mise à jour de l\'animal!');
         }
       });
     }

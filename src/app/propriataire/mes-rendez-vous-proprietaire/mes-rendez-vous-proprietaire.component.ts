@@ -54,7 +54,7 @@ export class MesRendezVousProprietaireComponent implements OnInit {
           .sort((a, b) => new Date(b.creeLe!).getTime() - new Date(a.creeLe!).getTime());
       },
       error: (error: any) => {
-        console.error('Error fetching rendez-vous', error);
+        console.error('Erreur lors de la récupération des rendez-vous', error);
       }
     });
   }
@@ -118,7 +118,7 @@ export class MesRendezVousProprietaireComponent implements OnInit {
     try {
       this.animaux = await firstValueFrom(this.animauxService.getAnimauxByProprietaireId(this.user.id));
     } catch (error) {
-      console.error('Error fetching animaux', error);
+      console.error('Erreur lors de la récupération des animaux', error);
     }
   }
 
@@ -130,7 +130,7 @@ export class MesRendezVousProprietaireComponent implements OnInit {
         });
       },
       error: (error: any) => {
-        console.error('Error fetching services', error);
+        console.error('Erreur lors de la récupération des services', error);
       }
     });
   }

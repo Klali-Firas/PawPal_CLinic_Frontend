@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <h2>Ajouter un Animal</h2>
   <form [formGroup]="animalForm">
-    <div class="mb-3">
+    <div class="mb-3" [ngClass]="{'is-invalid': animalForm.get('nom')?.invalid && animalForm.get('nom')?.touched}">
       <label for="animalName" class="form-label">
         <i class="fas fa-paw"></i> Nom de l'animal
       </label>
@@ -9,7 +9,7 @@
         placeholder="Entrez le nom de l'animal" required>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" [ngClass]="{'is-invalid': animalForm.get('race')?.invalid && animalForm.get('race')?.touched}">
       <label for="animalRace" class="form-label">
         <i class="fas fa-dog"></i> Race
       </label>
@@ -17,7 +17,7 @@
         placeholder="Entrez la race de l'animal">
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" [ngClass]="{'is-invalid': animalForm.get('age')?.invalid && animalForm.get('age')?.touched}">
       <label for="animalAge" class="form-label">
         <i class="fas fa-birthday-cake"></i> Âge
       </label>
@@ -25,15 +25,9 @@
         placeholder="Entrez l'âge de l'animal">
     </div>
 
-    <div class="mb-3">
-      <label for="medicalHistory" class="form-label">
-        <i class="fas fa-notes-medical"></i> Historique médical
-      </label>
-      <textarea class="form-control" id="medicalHistory" formControlName="historiqueMedical" rows="3"
-        placeholder="Entrez l'historique médical de l'animal"></textarea>
-    </div>
 
-    <div class="mb-3">
+    <div class="mb-3"
+      [ngClass]="{'is-invalid': animalForm.get('proprietaireId')?.invalid && animalForm.get('proprietaireId')?.touched}">
       <label for="ownerName" class="form-label">
         <i class="fas fa-user"></i> Nom du propriétaire
       </label>

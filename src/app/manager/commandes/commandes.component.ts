@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommandeService } from 'src/app/services/commande.service';
-import { CommandeProduits, Commandes, Produits } from 'src/app/interfaces/interfaces';
+import { CommandeProduits, Commandes, Produits, Utilisateurs } from 'src/app/interfaces/interfaces';
 import { CommandeProduitService } from 'src/app/services/commandeproduit.service';
 import { ProduitService } from 'src/app/services/produit.service';
 import { ToastrService } from 'ngx-toastr';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
 
 declare var $: any;
 
@@ -18,12 +19,14 @@ export class CommandesComponent implements OnInit {
   commandeProduits: CommandeProduits[] = [];
   produits: Map<number, Produits> = new Map();
   page: number = 1;
+  proprietaireNom: string | null = null;
 
   constructor(
     private commandeService: CommandeService,
     private commandeProduitService: CommandeProduitService,
     private produitService: ProduitService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private utilisateurService: UtilisateurService
   ) { }
 
   ngOnInit(): void {
@@ -44,6 +47,15 @@ export class CommandesComponent implements OnInit {
 
   openCommandeModal(commande: Commandes): void {
     this.selectedCommande = commande;
+    this.utilisateurService.getUtilisateurById(commande.proprietaireId).subscribe({
+      next: (utilisateur: Utilisateurs) => {
+        this.proprietaireNom = `${utilisateur.prenom} ${utilisateur.nom}`;
+      },
+      error: (error: any) => {
+        console.error('Erreur lors de la récupération du propriétaire', error);
+        this.toastr.error('Erreur lors de la récupération du propriétaire', 'Erreur');
+      }
+    });
     this.commandeProduitService.getCommandeProduitsByCommandeId(commande.id).subscribe({
       next: (response: CommandeProduits[]) => {
         this.commandeProduits = response;

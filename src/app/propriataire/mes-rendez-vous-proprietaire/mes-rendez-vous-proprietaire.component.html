@@ -1,28 +1,31 @@
 <div class="container mt-4">
     <h2>Mes Rendez-vous</h2>
-    <table class="table table-striped">
-        <thead class="table-primary">
-            <tr>
-                <th scope="col">Animal</th>
-                <th scope="col">Date</th>
-                <th scope="col">Statut</th>
-                <th scope="col">Motif</th>
-                <th scope="col">Remarques</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 5, currentPage: page }"
-                (click)="rv.statut === 'termine' ? openModal(rv) : null">
-                <td>{{ getAnimalName(rv.animalId) }}</td>
-                <td>{{ rv.dateRendezVous | date: 'MMM dd, yyyy hh:mm' }}</td>
-                <td>{{ rv.statut }}</td>
-                <td>{{ services.get(rv.motif)?.nomService }}</td>
-                <td>{{ rv.remarques }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Animal</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Motif</th>
+                    <th scope="col">Remarques</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 5, currentPage: page }"
+                    (click)="rv.statut === 'termine' ? openModal(rv) : null">
+                    <td>{{ getAnimalName(rv.animalId) }}</td>
+                    <td>{{ rv.dateRendezVous | date: 'MMM dd, yyyy hh:mm' }}</td>
+                    <td>{{ rv.statut }}</td>
+                    <td>{{ services.get(rv.motif)?.nomService }}</td>
+                    <td>{{ rv.remarques }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="d-flex justify-content-center">
-        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        <pagination-controls (pageChange)="page = $event" previousLabel="précédent"
+            nextLabel="suivant"></pagination-controls>
     </div>
 </div>
 

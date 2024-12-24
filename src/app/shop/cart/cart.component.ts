@@ -7,6 +7,7 @@ import { CommandeProduits, Commandes, Produits, Utilisateurs } from 'src/app/int
 import { CommandeService } from 'src/app/services/commande.service';
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
+import { ProduitService } from 'src/app/services/produit.service';
 
 declare var $: any;
 
@@ -26,7 +27,8 @@ export class CartComponent implements OnInit {
     private commandeProduitService: CommandeProduitService,
     private router: Router,
     private commandeService: CommandeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private produitService: ProduitService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +42,7 @@ export class CartComponent implements OnInit {
   }
 
   calculateTotalPrice(): void {
-    this.totalPrice = this.cart.reduce((sum, product) => sum + (product.prix * (product.quantity || 1)), 0);
+    this.totalPrice = parseFloat(this.cart.reduce((sum, product) => sum + (product.prix * (product.quantity || 1)), 0).toFixed(2));
   }
 
   updateCart(): void {
@@ -67,6 +69,14 @@ export class CartComponent implements OnInit {
 
   async confirmOrder(): Promise<void> {
     if (this.authService.isLoggedIn()) {
+      for (const product of this.cart) {
+        const produit = await firstValueFrom(this.produitService.getProduitById(product.id));
+        if (product.quantity! > produit.quantiteStock) {
+          this.toastr.error(`Stock insuffisant pour le produit: ${product.nomProduit}`, 'Erreur');
+          return;
+        }
+      }
+
       const commande: Commandes = {
         id: 0,
         proprietaireId: this.user.id,

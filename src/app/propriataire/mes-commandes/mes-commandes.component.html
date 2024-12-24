@@ -2,29 +2,32 @@
     <h2>Mes Commandes</h2>
     <div class="row">
         <div class="col-12">
-            <table class="table table-striped">
-                <thead class="table-primary">
-                    <tr>
-                        <th scope="col">Date</th>
-                        <th scope="col">Statut</th>
-                        <th scope="col">Actions</th>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col">Actions</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let commande of commandes | paginate: { itemsPerPage: 5, currentPage: page }"
-                        (click)="openCommandeModal(commande)">
-                        <td>{{ commande.dateCommande | date :'MMM dd, yyyy hh:mm' }}</td>
-                        <td>{{ commande.statut }}</td>
-                        <td>
-                            <button class="btn btn-primary btn-sm" (click)="openCommandeModal(commande)">Voir
-                                Détails</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let commande of commandes | paginate: { itemsPerPage: 5, currentPage: page }"
+                            (click)="openCommandeModal(commande)">
+                            <td>{{ commande.dateCommande | date :'MMM dd, yyyy hh:mm' }}</td>
+                            <td>{{ commande.statut }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" (click)="openCommandeModal(commande)">Voir
+                                    Détails</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="d-flex justify-content-center">
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                <pagination-controls (pageChange)="page = $event" previousLabel="précédent"
+                    nextLabel="suivant"></pagination-controls>
             </div>
         </div>
     </div>
@@ -47,24 +50,26 @@
                 <p><strong>Statut:</strong> {{ selectedCommande.statut }}</p>
                 <hr>
                 <h5>Produits</h5>
-                <table class="table table-striped">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th scope="col">Produit</th>
-                            <th scope="col">Quantité</th>
-                            <th scope="col">Prix Unitaire</th>
-                            <th scope="col">Prix Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let cp of commandeProduits">
-                            <td>{{ produits.get(cp.produitId)?.nomProduit }}</td>
-                            <td>{{ cp.quantite }}</td>
-                            <td>{{ produits.get(cp.produitId)?.prix }} TND</td>
-                            <td>{{ (produits.get(cp.produitId)?.prix! * cp.quantite) }} TND</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th scope="col">Produit</th>
+                                <th scope="col">Quantité</th>
+                                <th scope="col">Prix Unitaire</th>
+                                <th scope="col">Prix Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let cp of commandeProduits">
+                                <td>{{ produits.get(cp.produitId)?.nomProduit }}</td>
+                                <td>{{ cp.quantite }}</td>
+                                <td>{{ produits.get(cp.produitId)?.prix }} TND</td>
+                                <td>{{ (produits.get(cp.produitId)?.prix! * cp.quantite) }} TND</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <p><strong>Prix Total:</strong> {{ totalPrice }} TND</p>
             </div>
         </div>

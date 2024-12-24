@@ -1,46 +1,49 @@
 <div class="container mt-2">
-    <table class="table table-striped">
-        <thead class="table-primary">
-            <tr>
-                <th scope="col"><i class="fas fa-user"></i> Propriétaire</th>
-                <th scope="col"><i class="fas fa-paw"></i> Animal</th>
-                <th scope="col"><i class="fas fa-user-md"></i> Vétérinaire</th>
-                <th scope="col"><i class="fas fa-calendar-alt"></i> Date</th>
-                <th scope="col"><i class="fas fa-info-circle"></i> Statut</th>
-                <th scope="col"><i class="fas fa-stethoscope"></i> Motif</th>
-                <th scope="col"><i class="fas fa-cogs"></i> Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let rv of paginatedRendezVous">
-                <td>{{ proprietaires.get(rv.animalId)?.nom + " " + proprietaires.get(rv.animalId)?.prenom }}</td>
-                <td>{{ animaux.get(rv.animalId)?.nom +" : "+ animaux.get(rv.animalId)?.race}}</td>
-                <td>
-                    <ng-container *ngIf="rv.veterinaireId; else vetList">
-                        {{ veterinaires.get(rv.veterinaireId!)?.nom + " " + veterinaires.get(rv.veterinaireId!)?.prenom
-                        }}
-                    </ng-container>
-                    <ng-template #vetList>
-                        <select class="custom-select" (change)="onVetChange($event, rv.id)">
-                            <option selected disabled>Choisir...</option>
-                            <option *ngFor="let vet of veterinaires.values()" [value]="vet.id">
-                                {{ vet.nom + " " + vet.prenom }}
-                            </option>
-                        </select>
-                    </ng-template>
-                </td>
-                <td>{{ rv.dateRendezVous | date:'MMM dd, yyyy hh:mm' }}</td>
-                <td>{{ rv.statut }}</td>
-                <td>{{ services.get(rv.motif)?.nomService }}</td>
-                <td>
-                    <button class="btn btn-primary" *ngIf="!rv.veterinaireId" [disabled]="!selectedVetIds[rv.id]"
-                        (click)="assignVeterinaire(rv.id, selectedVetIds[rv.id])">
-                        <i class="fas fa-user-plus"></i> Assigner Vétérinaire
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col"><i class="fas fa-user"></i> Propriétaire</th>
+                    <th scope="col"><i class="fas fa-paw"></i> Animal</th>
+                    <th scope="col"><i class="fas fa-user-md"></i> Vétérinaire</th>
+                    <th scope="col"><i class="fas fa-calendar-alt"></i> Date</th>
+                    <th scope="col"><i class="fas fa-info-circle"></i> Statut</th>
+                    <th scope="col"><i class="fas fa-stethoscope"></i> Motif</th>
+                    <th scope="col"><i class="fas fa-cogs"></i> Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let rv of paginatedRendezVous">
+                    <td>{{ proprietaires.get(rv.animalId)?.nom + " " + proprietaires.get(rv.animalId)?.prenom }}</td>
+                    <td>{{ animaux.get(rv.animalId)?.nom +" : "+ animaux.get(rv.animalId)?.race}}</td>
+                    <td>
+                        <ng-container *ngIf="rv.veterinaireId; else vetList">
+                            {{ veterinaires.get(rv.veterinaireId!)?.nom + " " +
+                            veterinaires.get(rv.veterinaireId!)?.prenom
+                            }}
+                        </ng-container>
+                        <ng-template #vetList>
+                            <select class="custom-select" (change)="onVetChange($event, rv.id)">
+                                <option selected disabled>Choisir...</option>
+                                <option *ngFor="let vet of veterinaires.values()" [value]="vet.id">
+                                    {{ vet.nom + " " + vet.prenom }}
+                                </option>
+                            </select>
+                        </ng-template>
+                    </td>
+                    <td>{{ rv.dateRendezVous | date:'MMM dd, yyyy hh:mm' }}</td>
+                    <td>{{ rv.statut }}</td>
+                    <td>{{ services.get(rv.motif)?.nomService }}</td>
+                    <td>
+                        <button class="btn btn-primary" *ngIf="!rv.veterinaireId" [disabled]="!selectedVetIds[rv.id]"
+                            (click)="assignVeterinaire(rv.id, selectedVetIds[rv.id])">
+                            <i class="fas fa-user-plus"></i> Assigner Vétérinaire
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="pagination-controls">
         <button class="btn btn-primary" (click)="previousPage()" [disabled]="currentPage === 1">
             <i class="fas fa-chevron-left"></i>
