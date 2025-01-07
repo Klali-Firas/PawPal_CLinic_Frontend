@@ -1,36 +1,43 @@
 <div class="container mt-4">
+    <h2 class="text-center mb-4">Mes Rendez-vous</h2>
     <div class="row">
-        <div class="col-12">
-            <table class="table table-striped">
-                <thead class="table-primary">
-                    <tr>
-                        <th scope="col">Propriétaire</th>
-                        <th scope="col">Animal</th>
-                        <th scope="col">Race</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Statut</th>
-                        <th scope="col">Motif</th>
-                        <th scope="col">Remarques</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 5, currentPage: page }"
-                        (click)="rv.statut === 'confirme' ?openModal(rv):null">
-                        <td>{{ proprietaires.get(rv.animalId)?.nom + " " + proprietaires.get(rv.animalId)?.prenom }}
-                        </td>
-                        <td>{{ animaux.get(rv.animalId)?.nom }}</td>
-                        <td>{{ animaux.get(rv.animalId)?.race }}</td>
-                        <td>{{ rv.dateRendezVous | date }}</td>
-                        <td>{{ rv.statut }}</td>
-                        <td>{{ services.get(rv.motif)?.nomService }}</td>
-                        <td>{{ rv.remarques }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-center">
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        <div *ngFor="let rv of rendezVous | paginate: { itemsPerPage: 6, currentPage: page }"
+            class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body"
+                    (click)="(rv.statut === 'confirme' || rv.statut === 'termine') ? openModal(rv) : null">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="card-title"><i class="fas fa-user"></i> {{ proprietaires.get(rv.animalId)?.nom +
+                                ' ' + proprietaires.get(rv.animalId)?.prenom }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-paw"></i> {{
+                                animaux.get(rv.animalId)?.nom }} - {{ animaux.get(rv.animalId)?.race }}</h6>
+                        </div>
+                        <div>
+                            <span class="badge badge-pill"
+                                [ngClass]="{'badge-primary': rv.statut === 'confirme', 'badge-success': rv.statut === 'termine'}">{{
+                                rv.statut }}</span>
+                        </div>
+                    </div>
+                    <p class="card-text"><i class="fas fa-calendar-alt"></i> <strong>Date:</strong> {{ rv.dateRendezVous
+                        | date }}</p>
+                    <p class="card-text"><i class="fas fa-stethoscope"></i> <strong>Motif:</strong> {{
+                        services.get(rv.motif)?.nomService }}</p>
+                    <p class="card-text"><i class="fas fa-comment"></i> <strong>Remarques:</strong> {{ rv.remarques }}
+                    </p>
+                    <div *ngIf="avis.has(rv.id)">
+                        <hr>
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-star"></i> Avis</h6>
+                        <app-star-rating [rating]="avis.get(rv.id)?.note!" [readOnly]="true"></app-star-rating>
+                        <p class="card-text"><i class="fas fa-comment-dots"></i> <strong>Commentaire:</strong> {{
+                            avis.get(rv.id)?.commentaire }}</p>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
 </div>
 
@@ -40,7 +47,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editAnimalModalLabel">Modifier Animal</h5>
+                <h5 class="modal-title" id="editAnimalModalLabel"><i class="fas fa-edit"></i> Modifier Animal</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -48,20 +55,27 @@
             <div class="modal-body">
                 <form [formGroup]="editAnimalForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
-                        <label for="animalName">Nom de l'animal</label>
+                        <label for="animalName"><i class="fas fa-paw"></i> Nom de l'animal</label>
                         <input type="text" id="animalName" formControlName="nom" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="animalRace">Race de l'animal</label>
+                        <label for="animalRace"><i class="fas fa-dog"></i> Race de l'animal</label>
                         <input type="text" id="animalRace" formControlName="race" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="remarques">Remarques</label>
-                        <textarea id="remarques" formControlName="remarques" class="form-control"></textarea>
+                        <div class="d-flex align-items-center">
+                            <label for="remarques"><i class="fas fa-comment"></i> Remarques</label>
+                            <img src="assets/images/ai-stars.svg" alt="AI Star" [class.flicker]="isGenerating"
+                                style="width: 20px; height: 20px; margin-left: auto; margin-bottom: 8px;"
+                                (click)="onAIStarsClick()" data-toggle="tooltip"
+                                title="Générer des remarques améliorées">
+                        </div>
+                        <textarea id="remarques" formControlName="remarques" class="form-control" rows="3"></textarea>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-primary">Confirmer</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="isGenerating">Confirmer</button>
                     </div>
                 </form>
             </div>

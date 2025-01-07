@@ -1,32 +1,36 @@
 <div class="container mt-4">
   <h2>Ajouter un Animal</h2>
   <form [formGroup]="animalForm">
-    <div class="mb-3">
-      <label for="animalName" class="form-label">Nom de l'animal</label>
+    <div class="mb-3" [ngClass]="{'is-invalid': animalForm.get('nom')?.invalid && animalForm.get('nom')?.touched}">
+      <label for="animalName" class="form-label">
+        <i class="fas fa-paw"></i> Nom de l'animal
+      </label>
       <input type="text" class="form-control" id="animalName" formControlName="nom"
         placeholder="Entrez le nom de l'animal" required>
     </div>
 
-    <div class="mb-3">
-      <label for="animalRace" class="form-label">Race</label>
+    <div class="mb-3" [ngClass]="{'is-invalid': animalForm.get('race')?.invalid && animalForm.get('race')?.touched}">
+      <label for="animalRace" class="form-label">
+        <i class="fas fa-dog"></i> Race
+      </label>
       <input type="text" class="form-control" id="animalRace" formControlName="race"
         placeholder="Entrez la race de l'animal">
     </div>
 
-    <div class="mb-3">
-      <label for="animalAge" class="form-label">Âge</label>
+    <div class="mb-3" [ngClass]="{'is-invalid': animalForm.get('age')?.invalid && animalForm.get('age')?.touched}">
+      <label for="animalAge" class="form-label">
+        <i class="fas fa-birthday-cake"></i> Âge
+      </label>
       <input type="number" class="form-control" id="animalAge" formControlName="age"
         placeholder="Entrez l'âge de l'animal">
     </div>
 
-    <div class="mb-3">
-      <label for="medicalHistory" class="form-label">Historique médical</label>
-      <textarea class="form-control" id="medicalHistory" formControlName="historiqueMedical" rows="3"
-        placeholder="Entrez l'historique médical de l'animal"></textarea>
-    </div>
 
-    <div class="mb-3">
-      <label for="ownerName" class="form-label">Nom du propriétaire</label>
+    <div class="mb-3"
+      [ngClass]="{'is-invalid': animalForm.get('proprietaireId')?.invalid && animalForm.get('proprietaireId')?.touched}">
+      <label for="ownerName" class="form-label">
+        <i class="fas fa-user"></i> Nom du propriétaire
+      </label>
       <select class="form-control" id="ownerName" formControlName="proprietaireId" required>
         <option value="" disabled selected>Choisissez un propriétaire</option>
         <option *ngFor="let utilisateur of utilisateurs" [value]="utilisateur.id">
@@ -36,7 +40,9 @@
     </div>
 
     <div class="d-flex justify-content-end">
-      <button type="submit" class="btn btn-success" (click)="onSubmit()">Ajouter l'animal</button>
+      <button type="submit" class="btn btn-success" (click)="onSubmit()">
+        <i class="fas fa-check"></i> Ajouter l'animal
+      </button>
     </div>
   </form>
 </div>

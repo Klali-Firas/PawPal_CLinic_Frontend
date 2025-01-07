@@ -1,0 +1,72 @@
+.container {
+  max-width: 1200px;
+}
+
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-subtitle {
+  font-size: 1rem;
+}
+
+.badge-pill {
+  font-size: 0.875rem;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+}
+
+.modal-footer .btn {
+  min-width: 100px;
+}
+
+i {
+  margin-right: 5px;
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    filter: grayscale(100%);
+  }
+  50% {
+    filter: none;
+  }
+}
+
+img[src*="ai-stars.svg"] {
+  filter: grayscale(100%);
+  transition: filter 0.2s;
+}
+
+img[src*="ai-stars.svg"]:hover {
+  filter: none;
+  cursor: pointer;
+}
+
+img.flicker {
+  animation: flicker 1500ms infinite;
+}
+
+.tooltip {
+  opacity: 0.5 !important;
+}
+
+.tooltip.show {
+  transition-delay: 1s !important;
+}

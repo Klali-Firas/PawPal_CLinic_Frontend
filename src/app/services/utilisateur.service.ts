@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Utilisateurs } from '../interfaces/interfaces';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,7 @@ import { Observable } from 'rxjs';
 export class UtilisateurService {
 
   constructor(private http: HttpClient) { }
-  apiUrl = 'http://localhost:4332/api/public/utilisateurs';
-
+  apiUrl = `${environment.apiUrl}/api/public/utilisateurs`;
 
   getVeterinaireById(id: number): Observable<Utilisateurs> {
     return this.http.get<Utilisateurs>(`${this.apiUrl}/veterinaire/${id}`);
@@ -27,8 +27,13 @@ export class UtilisateurService {
   getAllVeterinaires(): Observable<Utilisateurs[]> {
     return this.http.get<Utilisateurs[]>(`${this.apiUrl}/veterinaires`);
   }
+
   getAllUtilisateurs(): Observable<Utilisateurs[]> {
     return this.http.get<Utilisateurs[]>(`${this.apiUrl}`);
+  }
+
+  getLoggedInUser(): Observable<Utilisateurs> {
+    return this.http.get<Utilisateurs>(`${this.apiUrl}/loggedInUser`);
   }
 }
 

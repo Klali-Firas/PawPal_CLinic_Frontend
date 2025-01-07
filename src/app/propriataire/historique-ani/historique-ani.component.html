@@ -1,0 +1,92 @@
+<div class="container mt-4 ftco-faqs" *ngIf="animaux.length > 0; else noAnimaux">
+  <div class="row mb-3">
+    <div class="col-12">
+      <div class="input-group">
+        <input type="text" class="form-control search-input" style="border-radius:  40px 0 0 40px;"
+          placeholder="Rechercher par nom d'animal" [(ngModel)]="searchTerm" (input)="searchAnimals()">
+        <div class="input-group-append">
+          <span class="input-group-text search-icon" style="border-radius: 0 40px 40px 0;">
+            <i class="fa fa-search"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div id="accordion" class="w-100 myaccordion" aria-multiselectable="true">
+        <div class="card" *ngFor="let animal of paginatedAnimaux">
+          <div class="card-header p-0" id="heading{{animal.id}}">
+            <h2 class="mb-0">
+              <button class="d-flex py-3 px-4 align-items-center justify-content-between btn btn-link collapsed"
+                data-toggle="collapse" attr.data-target="#collapse{{animal.id}}" aria-expanded="false"
+                attr.aria-controls="collapse{{animal.id}}">
+                <p class="mb-0">{{ animal.nom }}</p>
+                <i class="fa" aria-hidden="true"></i>
+              </button>
+            </h2>
+          </div>
+          <div id="collapse{{animal.id}}" class="collapse" [attr.aria-labelledby]="'heading' + animal.id"
+            data-parent="#accordion">
+            <div class="card-body">
+              <p class="mb-1"><strong>Race :</strong> {{ animal.race }}</p>
+              <p class="mb-1"><strong>Âge :</strong> {{ animal.age }}</p>
+              <p class="mb-1"><strong>Historique Médical :</strong> {{ animal.historiqueMedical }}</p>
+              <div *ngIf="getRendezVousForAnimal(animal.id).length > 0; else noRendezVous">
+                <h4 class="mt-3">Rendez-vous :</h4>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th>Motif</th>
+                        <th>Créé Le</th>
+                        <th>Remarques</th>
+                        <th>Vétérinaire</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let rv of getRendezVousForAnimal(animal.id)">
+                        <td>{{ rv.dateRendezVous | date:'short' }}</td>
+                        <td>{{ rv.statut }}</td>
+                        <td>{{ rv.motif }}</td>
+                        <td>{{ rv.creeLe | date:'short' }}</td>
+                        <td>{{ rv.remarques }}</td>
+                        <td>{{ rv.veterinaireId ? (veterinaires.get(rv.veterinaireId)?.nom + " " +
+                          veterinaires.get(rv.veterinaireId)?.prenom) : 'N/A' }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <ng-template #noRendezVous>
+                <p class="text-muted">Aucun rendez-vous trouvé pour cet animal.</p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav aria-label="Navigation de page">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="previousPage()" aria-label="Précédent">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
+            <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="nextPage()" aria-label="Suivant">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<ng-template #noAnimaux>
+  <p class="text-muted">Aucun animal trouvé pour cet utilisateur.</p>
+</ng-template>

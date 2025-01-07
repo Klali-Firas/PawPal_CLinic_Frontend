@@ -19,9 +19,8 @@ export class AjoutAnimalComponent implements OnInit {
   constructor(private utilisateurService: UtilisateurService, private fb: FormBuilder, private animalService: AnimauxService, private toastr: ToastrService, private router: Router) {
     this.animalForm = this.fb.group({
       nom: [null, Validators.required],
-      race: [null],
-      age: [null],
-      historiqueMedical: [null],
+      race: [null, Validators.required],
+      age: [null, Validators.required],
       proprietaireId: [null, Validators.required],
 
     });
@@ -68,12 +67,21 @@ export class AjoutAnimalComponent implements OnInit {
           console.error('Error adding animal', error);
         }
       });
+    } else {
+      this.toastr.error('Veuillez remplir tous les champs obligatoires.');
+      this.markFormGroupTouched(this.animalForm);
     }
   }
 
-
-
-
-
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      } else {
+        control?.markAsTouched({ onlySelf: true });
+      }
+    });
+  }
 
 }

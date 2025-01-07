@@ -22,6 +22,7 @@ export interface Avis {
   note?: number | null
   commentaire?: string | null
   creeLe?: Date | null
+  proprietaireId: number
 }
 
 export interface Rappels {
@@ -58,7 +59,6 @@ export interface CommandeProduits {
   commandeId: number
   produitId: number
   quantite: number
-  prix: number
 }
 
 export interface RendezVous {
@@ -80,6 +80,8 @@ export interface Produits {
   prix: number
   quantiteStock: number
   creeLe?: Date | null
+  image: string;
+  quantity?: number; // Add this line
 }
 
 export interface Animaux {

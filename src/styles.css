@@ -8,3 +8,7 @@ a[href="https://primeng.org/lts"]
 {
   display: none !important;
 }
+
+body {
+  background-color: #f8f9fd !important;
+}

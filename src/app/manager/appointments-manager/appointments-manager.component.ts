@@ -28,10 +28,14 @@ export class AppointmentsManagerComponent implements OnInit {
 
   services: Map<number, Services> = new Map();
 
+  currentPage: number = 1;
+  itemsPerPage: number = 7;
+
   async ngOnInit(): Promise<void> {
     this.getAllServices();
     await this.getAllVeterinaires();
     await this.getAllRendezVous();
+    this.sortRendezVousByDate();
     this.rendezVous?.forEach(async rendezVous => {
       await this.getPrioprietaireByAnimalId(rendezVous.animalId);
       this.getAnimauxById(rendezVous.animalId);
@@ -39,6 +43,27 @@ export class AppointmentsManagerComponent implements OnInit {
       // await this.getVeterinaireById(rendezVous.veterinaireId);
     });
 
+  }
+
+  sortRendezVousByDate() {
+    this.rendezVous?.sort((a, b) => new Date(b.creeLe!).getTime() - new Date(a.creeLe!).getTime());
+  }
+
+  get paginatedRendezVous() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.rendezVous?.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  nextPage() {
+    if (this.currentPage * this.itemsPerPage < (this.rendezVous?.length || 0)) {
+      this.currentPage++;
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
   }
 
   async getAllRendezVous() {

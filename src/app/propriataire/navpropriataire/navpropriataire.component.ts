@@ -41,5 +41,34 @@ export class NavpropriataireComponent implements OnInit {
     });
   }
 
+  navigateToHistory() {
+    this.router.navigate(['proprietaire', 'historique']).then(() => {
+       this.updateActiveClass();
+    });
+  }
+  navigateToMyAppointments() {
+    this.router.navigate(['proprietaire', 'mes-rendez-vous']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
+  navigateToShop() {
+    this.router.navigate(['proprietaire', 'shop']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
+  navigateToCart() {
+    this.router.navigate(['proprietaire', 'shop', 'cart']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
+  navigateToOrders() {
+    this.router.navigate(['proprietaire', 'mes-commandes']).then(() => {
+      this.updateActiveClass();
+    });
+  }
+
 
 }
